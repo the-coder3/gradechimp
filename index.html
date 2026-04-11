@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GradeChimp — Final Grade Calculator | What Do I Need on My Final?</title>
+<meta name="description" content="Free final grade calculator. Find out exactly what score you need on your final exam to get the grade you want. Fast, clean, and AI-powered tips.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --surface2: #1a1a24;
+    --border: #2a2a3a;
+    --text: #e8e8f0;
+    --text-dim: #8888a0;
+    --accent: #6c5ce7;
+    --accent-glow: #7c6cf7;
+    --accent-light: rgba(108, 92, 231, 0.15);
+    --green: #00d2a0;
+    --green-glow: rgba(0, 210, 160, 0.2);
+    --red: #ff6b6b;
+    --red-glow: rgba(255, 107, 107, 0.2);
+    --yellow: #ffd93d;
+    --yellow-glow: rgba(255, 217, 61, 0.2);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Ambient glow */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 600px;
+    background: radial-gradient(ellipse, rgba(108, 92, 231, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 580px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0 40px;
+  }
+
+  .logo {
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--accent-glow);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.85); }
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 6px;
+  }
+
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 20px;
+    transition: all 0.2s;
+  }
+
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--text);
+    background: var(--surface2);
+  }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--accent-light);
+    border: 1px solid rgba(108, 92, 231, 0.25);
+    color: var(--accent-glow);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.8rem, 5vw, 2.4rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+  }
+
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--accent-glow), #a29bfe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero p {
+    color: var(--text-dim);
+    font-size: 1rem;
+    font-weight: 400;
+    max-width: 400px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  /* CALCULATOR CARD */
+  .calc-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .calc-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.5;
+  }
+
+  .input-group {
+    margin-bottom: 20px;
+  }
+
+  .input-group label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+
+  .input-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .input-field {
+    flex: 1;
+    position: relative;
+  }
+
+  .input-field input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--text);
+    outline: none;
+    transition: all 0.2s;
+  }
+
+  .input-field input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-light);
+  }
+
+  .input-field input::placeholder {
+    color: #444460;
+  }
+
+  .input-suffix {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    font-weight: 500;
+    pointer-events: none;
+  }
+
+  .input-field input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  .input-field input::-webkit-outer-spin-button,
+  .input-field input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
+  /* GRADE SELECTOR */
+  .grade-selector {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .grade-btn {
+    padding: 10px 0;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface2);
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+
+  .grade-btn:hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+
+  .grade-btn.selected {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+  }
+
+  /* OR DIVIDER */
+  .or-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0;
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .or-divider::before, .or-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* CALCULATE BUTTON */
+  .calc-btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, var(--accent), #7c6cf7);
+    color: white;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+    margin-top: 8px;
+  }
+
+  .calc-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 25px rgba(108, 92, 231, 0.35);
+  }
+
+  .calc-btn:active {
+    transform: translateY(0);
+  }
+
+  /* RESULT */
+  .result-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    margin-bottom: 20px;
+    display: none;
+    animation: slideUp 0.35s ease;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-card.visible {
+    display: block;
+  }
+
+  .result-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .result-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .result-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -2px;
+    line-height: 1;
+  }
+
+  .result-number.easy { color: var(--green); }
+  .result-number.medium { color: var(--yellow); }
+  .result-number.hard { color: var(--red); }
+  .result-number.impossible { color: var(--red); }
+
+  .result-verdict {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .result-verdict.easy { background: var(--green-glow); color: var(--green); }
+  .result-verdict.medium { background: var(--yellow-glow); color: var(--yellow); }
+  .result-verdict.hard { background: var(--red-glow); color: var(--red); }
+  .result-verdict.impossible { background: var(--red-glow); color: var(--red); }
+
+  /* BREAKDOWN */
+  .breakdown {
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    margin-top: 16px;
+  }
+
+  .breakdown-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    font-size: 0.9rem;
+  }
+
+  .breakdown-row .label { color: var(--text-dim); }
+  .breakdown-row .value {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+  }
+
+  /* AI TIP */
+  .ai-tip {
+    margin-top: 16px;
+    background: var(--accent-light);
+    border: 1px solid rgba(108, 92, 231, 0.2);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+  }
+
+  .ai-tip-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent-glow);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .ai-tip p {
+    color: var(--text);
+    font-size: 0.88rem;
+    line-height: 1.55;
+    font-weight: 400;
+  }
+
+  /* GRADE TABLE */
+  .grade-table-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 20px;
+    display: none;
+    animation: slideUp 0.35s ease;
+  }
+
+  .grade-table-card.visible { display: block; }
+
+  .grade-table-card h3 {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 14px;
+  }
+
+  .grade-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .grade-table th, .grade-table td {
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 0.88rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .grade-table th {
+    color: var(--text-dim);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .grade-table td {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+  }
+
+  .grade-table tr:last-child td { border-bottom: none; }
+
+  .grade-table tr.highlight td {
+    background: var(--accent-light);
+    color: var(--accent-glow);
+    font-weight: 600;
+  }
+
+  /* OTHER TOOLS */
+  .tools-section {
+    margin-top: 40px;
+  }
+
+  .tools-section h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+    letter-spacing: -0.3px;
+  }
+
+  .tool-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .tool-link {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 18px 16px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+  }
+
+  .tool-link:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .tool-link .tool-icon {
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+  }
+
+  .tool-link .tool-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+
+  .tool-link .tool-desc {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
+
+  .tool-link .coming-soon {
+    font-size: 0.65rem;
+    color: var(--accent-glow);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 6px;
+  }
+
+  /* FOOTER */
+  footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.78rem;
+  }
+
+  footer a { color: var(--accent-glow); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <nav>
+    <div class="logo">
+      <div class="logo-dot"></div>
+      GradeChimp
+    </div>
+    <div class="nav-links">
+      <a href="#" class="active">Final Grade</a>
+      <a href="#">GPA</a>
+      <a href="#">Grade Avg</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-badge">✦ Free Forever</div>
+    <h1>What do I need on<br>my <span>final exam</span>?</h1>
+    <p>Enter your current grade and find out exactly what score you need. Takes 5 seconds.</p>
+  </div>
+
+  <!-- CALCULATOR -->
+  <div class="calc-card">
+    <div class="input-group">
+      <label>My current grade</label>
+      <div class="input-field">
+        <input type="number" id="currentGrade" placeholder="85" min="0" max="200" step="any">
+        <span class="input-suffix">%</span>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>Final exam weight</label>
+      <div class="input-field">
+        <input type="number" id="finalWeight" placeholder="30" min="0" max="100" step="any">
+        <span class="input-suffix">%</span>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>Grade I want</label>
+      <div class="grade-selector" id="gradeSelector">
+        <button class="grade-btn" data-value="97">A+</button>
+        <button class="grade-btn" data-value="93">A</button>
+        <button class="grade-btn selected" data-value="90">A-</button>
+        <button class="grade-btn" data-value="87">B+</button>
+        <button class="grade-btn" data-value="83">B</button>
+        <button class="grade-btn" data-value="80">B-</button>
+        <button class="grade-btn" data-value="77">C+</button>
+        <button class="grade-btn" data-value="73">C</button>
+        <button class="grade-btn" data-value="70">C-</button>
+        <button class="grade-btn" data-value="60">D</button>
+      </div>
+      <div class="or-divider">or enter custom</div>
+      <div class="input-field">
+        <input type="number" id="desiredGrade" placeholder="90" min="0" max="100" step="any">
+        <span class="input-suffix">%</span>
+      </div>
+    </div>
+
+    <button class="calc-btn" onclick="calculate()">Calculate My Final Grade →</button>
+  </div>
+
+  <!-- RESULT -->
+  <div class="result-card" id="resultCard">
+    <div class="result-header">
+      <div>
+        <div class="result-label">You need at least</div>
+        <div class="result-number" id="resultNumber">—</div>
+      </div>
+      <div class="result-verdict" id="resultVerdict">—</div>
+    </div>
+
+    <div class="breakdown">
+      <div class="breakdown-title">Breakdown</div>
+      <div class="breakdown-row">
+        <span class="label">Current grade</span>
+        <span class="value" id="brkCurrent">—</span>
+      </div>
+      <div class="breakdown-row">
+        <span class="label">Final weight</span>
+        <span class="value" id="brkWeight">—</span>
+      </div>
+      <div class="breakdown-row">
+        <span class="label">Target grade</span>
+        <span class="value" id="brkTarget">—</span>
+      </div>
+      <div class="breakdown-row">
+        <span class="label">Score needed on final</span>
+        <span class="value" id="brkNeeded" style="color: var(--accent-glow)">—</span>
+      </div>
+    </div>
+
+    <div class="ai-tip" id="aiTip">
+      <div class="ai-tip-header">⚡ Smart Tip</div>
+      <p id="aiTipText">—</p>
+    </div>
+  </div>
+
+  <!-- GRADE TABLE -->
+  <div class="grade-table-card" id="gradeTableCard">
+    <h3>All scenarios</h3>
+    <table class="grade-table">
+      <thead>
+        <tr><th>Target</th><th>Letter</th><th>Need on Final</th><th>Difficulty</th></tr>
+      </thead>
+      <tbody id="gradeTableBody"></tbody>
+    </table>
+  </div>
+
+  <!-- OTHER TOOLS -->
+  <div class="tools-section">
+    <h2>More tools</h2>
+    <div class="tool-grid">
+      <a href="#" class="tool-link">
+        <div class="tool-icon">📊</div>
+        <div class="tool-name">GPA Calculator</div>
+        <div class="tool-desc">Calculate your semester & cumulative GPA</div>
+        <div class="coming-soon">Coming soon</div>
+      </a>
+      <a href="#" class="tool-link">
+        <div class="tool-icon">📝</div>
+        <div class="tool-name">Grade Average</div>
+        <div class="tool-desc">Weighted average across all assignments</div>
+        <div class="coming-soon">Coming soon</div>
+      </a>
+      <a href="#" class="tool-link">
+        <div class="tool-icon">🎯</div>
+        <div class="tool-name">Target Planner</div>
+        <div class="tool-desc">What scores do you need going forward?</div>
+        <div class="coming-soon">Coming soon</div>
+      </a>
+      <a href="#" class="tool-link">
+        <div class="tool-icon">🧠</div>
+        <div class="tool-name">AI Study Plan</div>
+        <div class="tool-desc">Personalized study schedule for your exams</div>
+        <div class="coming-soon">Coming soon</div>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <p>GradeChimp — free student tools, forever.</p>
+    <p style="margin-top: 6px;">Built with 💜 for students everywhere.</p>
+  </footer>
+</div>
+
+<script>
+  // Grade selector buttons
+  const gradeSelector = document.getElementById('gradeSelector');
+  const desiredGradeInput = document.getElementById('desiredGrade');
+  let selectedGradeValue = 90;
+
+  gradeSelector.addEventListener('click', (e) => {
+    if (e.target.classList.contains('grade-btn')) {
+      gradeSelector.querySelectorAll('.grade-btn').forEach(b => b.classList.remove('selected'));
+      e.target.classList.add('selected');
+      selectedGradeValue = parseFloat(e.target.dataset.value);
+      desiredGradeInput.value = '';
+    }
+  });
+
+  desiredGradeInput.addEventListener('input', () => {
+    if (desiredGradeInput.value !== '') {
+      gradeSelector.querySelectorAll('.grade-btn').forEach(b => b.classList.remove('selected'));
+      selectedGradeValue = null;
+    }
+  });
+
+  function calculate() {
+    const current = parseFloat(document.getElementById('currentGrade').value);
+    const weight = parseFloat(document.getElementById('finalWeight').value);
+    const desired = desiredGradeInput.value !== '' ? parseFloat(desiredGradeInput.value) : selectedGradeValue;
+
+    if (isNaN(current) || isNaN(weight) || desired === null || isNaN(desired)) {
+      alert('Please fill in all fields.');
+      return;
+    }
+
+    if (weight <= 0 || weight > 100) {
+      alert('Final exam weight must be between 1 and 100%.');
+      return;
+    }
+
+    const w = weight / 100;
+    const needed = (desired - (1 - w) * current) / w;
+    const neededRounded = Math.ceil(needed * 10) / 10;
+
+    // Determine difficulty
+    let difficulty, diffClass;
+    if (needed <= 0) { difficulty = "You've already got this"; diffClass = "easy"; }
+    else if (needed <= 60) { difficulty = "Very doable"; diffClass = "easy"; }
+    else if (needed <= 80) { difficulty = "Manageable"; diffClass = "easy"; }
+    else if (needed <= 95) { difficulty = "Challenging"; diffClass = "medium"; }
+    else if (needed <= 100) { difficulty = "Tough but possible"; diffClass = "hard"; }
+    else { difficulty = "Not possible"; diffClass = "impossible"; }
+
+    // Display result
+    const resultCard = document.getElementById('resultCard');
+    resultCard.classList.add('visible');
+
+    const displayScore = needed <= 0 ? "0%" : (needed > 100 ? neededRounded.toFixed(1) + "%" : neededRounded.toFixed(1) + "%");
+
+    document.getElementById('resultNumber').textContent = displayScore;
+    document.getElementById('resultNumber').className = 'result-number ' + diffClass;
+
+    const verdict = document.getElementById('resultVerdict');
+    verdict.textContent = difficulty;
+    verdict.className = 'result-verdict ' + diffClass;
+
+    document.getElementById('brkCurrent').textContent = current + '%';
+    document.getElementById('brkWeight').textContent = weight + '%';
+    document.getElementById('brkTarget').textContent = desired + '%';
+    document.getElementById('brkNeeded').textContent = displayScore;
+
+    // AI Tip
+    const tipEl = document.getElementById('aiTipText');
+    if (needed <= 0) {
+      tipEl.textContent = "You could skip the final entirely and still get the grade you want. But showing up never hurts — it might even boost your grade further.";
+    } else if (needed <= 60) {
+      tipEl.textContent = "You're in great shape. A light review the night before should be plenty. Focus on the topics from the last few weeks — finals love to test recent material.";
+    } else if (needed <= 80) {
+      tipEl.textContent = "Totally manageable. Start studying 3-4 days before. Make a one-page cheat sheet of key concepts even if you can't bring it to the exam — the act of making it helps you memorize.";
+    } else if (needed <= 95) {
+      tipEl.textContent = "This is going to take real effort. Start now — not tomorrow. Break your study into 25-min focused blocks with 5-min breaks (Pomodoro method). Prioritize practice problems over re-reading notes.";
+    } else if (needed <= 100) {
+      tipEl.textContent = "You basically need a near-perfect score. It's possible but you need a serious plan. Study every day starting now, use practice exams, and consider asking your teacher if there's any extra credit available.";
+    } else {
+      tipEl.textContent = "Even a perfect score on the final won't get you there. Talk to your teacher ASAP — ask about extra credit, grade curves, or if any assignments can be redone. Don't give up, but be realistic about your options.";
+    }
+
+    // Grade table
+    const targets = [
+      { pct: 97, letter: 'A+' }, { pct: 93, letter: 'A' }, { pct: 90, letter: 'A-' },
+      { pct: 87, letter: 'B+' }, { pct: 83, letter: 'B' }, { pct: 80, letter: 'B-' },
+      { pct: 77, letter: 'C+' }, { pct: 73, letter: 'C' }, { pct: 70, letter: 'C-' },
+      { pct: 60, letter: 'D' }
+    ];
+
+    const tbody = document.getElementById('gradeTableBody');
+    tbody.innerHTML = '';
+
+    targets.forEach(t => {
+      const n = (t.pct - (1 - w) * current) / w;
+      const nRound = Math.ceil(n * 10) / 10;
+      let diff, display;
+      if (n <= 0) { diff = '✅ Guaranteed'; display = '0%'; }
+      else if (n <= 80) { diff = '🟢 Easy'; display = nRound.toFixed(1) + '%'; }
+      else if (n <= 95) { diff = '🟡 Doable'; display = nRound.toFixed(1) + '%'; }
+      else if (n <= 100) { diff = '🔴 Hard'; display = nRound.toFixed(1) + '%'; }
+      else { diff = '⛔ Impossible'; display = nRound.toFixed(1) + '%'; }
+
+      const isHighlight = t.pct === desired;
+      const tr = document.createElement('tr');
+      if (isHighlight) tr.classList.add('highlight');
+      tr.innerHTML = `<td>${t.pct}%</td><td>${t.letter}</td><td>${display}</td><td>${diff}</td>`;
+      tbody.appendChild(tr);
+    });
+
+    const tableCard = document.getElementById('gradeTableCard');
+    tableCard.classList.add('visible');
+
+    // Scroll to result
+    resultCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  // Enter key triggers calculate
+  document.querySelectorAll('input').forEach(input => {
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') calculate();
+    });
+  });
+</script>
+
+</body>
+</html>
