@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GPA Calculator — Free GPA Calculator for High School & College | GradeChimp</title>
+<meta name="description" content="Free GPA calculator for high school and college students. Calculate your semester and cumulative GPA instantly. Supports weighted and unweighted GPA.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --surface2: #1a1a24;
+    --border: #2a2a3a;
+    --text: #e8e8f0;
+    --text-dim: #8888a0;
+    --accent: #6c5ce7;
+    --accent-glow: #7c6cf7;
+    --accent-light: rgba(108, 92, 231, 0.15);
+    --green: #00d2a0;
+    --green-glow: rgba(0, 210, 160, 0.2);
+    --red: #ff6b6b;
+    --red-glow: rgba(255, 107, 107, 0.2);
+    --yellow: #ffd93d;
+    --yellow-glow: rgba(255, 217, 61, 0.2);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 600px;
+    background: radial-gradient(ellipse, rgba(108, 92, 231, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0 40px;
+  }
+
+  .logo {
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--text);
+  }
+
+  .logo-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--accent-glow);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.85); }
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 6px;
+  }
+
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 20px;
+    transition: all 0.2s;
+  }
+
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--text);
+    background: var(--surface2);
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--accent-light);
+    border: 1px solid rgba(108, 92, 231, 0.25);
+    color: var(--accent-glow);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.8rem, 5vw, 2.4rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+  }
+
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--accent-glow), #a29bfe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero p {
+    color: var(--text-dim);
+    font-size: 1rem;
+    font-weight: 400;
+    max-width: 420px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  .calc-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .calc-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.5;
+  }
+
+  /* Course row */
+  .course-header {
+    display: grid;
+    grid-template-columns: 1fr 100px 80px 40px;
+    gap: 10px;
+    margin-bottom: 8px;
+    padding: 0 2px;
+  }
+
+  .course-header span {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .course-row {
+    display: grid;
+    grid-template-columns: 1fr 100px 80px 40px;
+    gap: 10px;
+    margin-bottom: 8px;
+    align-items: center;
+    animation: slideUp 0.2s ease;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .course-row input, .course-row select {
+    width: 100%;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 12px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text);
+    outline: none;
+    transition: all 0.2s;
+  }
+
+  .course-row input:focus, .course-row select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-light);
+  }
+
+  .course-row input::placeholder {
+    color: #444460;
+  }
+
+  .course-row select {
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238888a0' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 28px;
+  }
+
+  .course-row select option {
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  .remove-btn {
+    background: none;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 10px 0;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .remove-btn:hover {
+    border-color: var(--red);
+    color: var(--red);
+    background: var(--red-glow);
+  }
+
+  .add-course-btn {
+    width: 100%;
+    padding: 12px;
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius-sm);
+    background: none;
+    color: var(--text-dim);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 4px;
+    margin-bottom: 16px;
+  }
+
+  .add-course-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent-glow);
+    background: var(--accent-light);
+  }
+
+  /* Cumulative GPA section */
+  .cumulative-section {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .cumulative-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    margin-bottom: 12px;
+  }
+
+  .cumulative-toggle input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid var(--border);
+    border-radius: 5px;
+    background: var(--surface2);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.15s;
+  }
+
+  .cumulative-toggle input[type="checkbox"]:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .cumulative-toggle input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    color: white;
+    font-size: 0.75rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .cumulative-toggle label {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text-dim);
+    cursor: pointer;
+  }
+
+  .cumulative-fields {
+    display: none;
+    gap: 12px;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 12px;
+  }
+
+  .cumulative-fields.visible {
+    display: grid;
+  }
+
+  .cumulative-fields .input-group label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .cumulative-fields input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    color: var(--text);
+    outline: none;
+    transition: all 0.2s;
+  }
+
+  .cumulative-fields input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-light);
+  }
+
+  .calc-btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, var(--accent), #7c6cf7);
+    color: white;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+  }
+
+  .calc-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 25px rgba(108, 92, 231, 0.35);
+  }
+
+  /* Result */
+  .result-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    margin-bottom: 20px;
+    display: none;
+    animation: slideUp 0.35s ease;
+  }
+
+  .result-card.visible { display: block; }
+
+  .result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .result-box {
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    padding: 20px 16px;
+    text-align: center;
+  }
+
+  .result-box .label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  .result-box .number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+  }
+
+  .result-box .sub {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  .gpa-excellent { color: var(--green); }
+  .gpa-good { color: #a29bfe; }
+  .gpa-average { color: var(--yellow); }
+  .gpa-low { color: var(--red); }
+
+  /* Course breakdown table */
+  .breakdown-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+  }
+
+  .breakdown-table th, .breakdown-table td {
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 0.85rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .breakdown-table th {
+    color: var(--text-dim);
+    font-weight: 600;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .breakdown-table tr:last-child td { border-bottom: none; }
+
+  /* AI tip */
+  .ai-tip {
+    margin-top: 16px;
+    background: var(--accent-light);
+    border: 1px solid rgba(108, 92, 231, 0.2);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+  }
+
+  .ai-tip-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent-glow);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .ai-tip p {
+    color: var(--text);
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  /* Other tools */
+  .tools-section { margin-top: 40px; }
+  .tools-section h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+    letter-spacing: -0.3px;
+  }
+
+  .tool-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .tool-link {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 18px 16px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+  }
+
+  .tool-link:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .tool-link .tool-icon { font-size: 1.4rem; margin-bottom: 8px; }
+  .tool-link .tool-name { font-size: 0.88rem; font-weight: 600; margin-bottom: 3px; }
+  .tool-link .tool-desc { font-size: 0.75rem; color: var(--text-dim); line-height: 1.4; }
+  .tool-link .coming-soon {
+    font-size: 0.65rem;
+    color: var(--accent-glow);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 6px;
+  }
+
+  footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.78rem;
+  }
+
+  footer a { color: var(--accent-glow); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <nav>
+    <a href="index.html" class="logo">
+      <div class="logo-dot"></div>
+      GradeChimp
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Final Grade</a>
+      <a href="gpa.html" class="active">GPA</a>
+      <a href="#">Grade Avg</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-badge">✦ Free Forever</div>
+    <h1>Calculate your <span>GPA</span> instantly</h1>
+    <p>Add your courses and grades below. Works for high school, college, weighted and unweighted.</p>
+  </div>
+
+  <div class="calc-card">
+    <div class="course-header">
+      <span>Course Name</span>
+      <span>Grade</span>
+      <span>Credits</span>
+      <span></span>
+    </div>
+
+    <div id="courseList">
+      <div class="course-row">
+        <input type="text" placeholder="e.g. Math 101">
+        <select>
+          <option value="">--</option>
+          <option value="4.0">A+</option>
+          <option value="4.0">A</option>
+          <option value="3.7">A-</option>
+          <option value="3.3">B+</option>
+          <option value="3.0">B</option>
+          <option value="2.7">B-</option>
+          <option value="2.3">C+</option>
+          <option value="2.0">C</option>
+          <option value="1.7">C-</option>
+          <option value="1.3">D+</option>
+          <option value="1.0">D</option>
+          <option value="0.7">D-</option>
+          <option value="0.0">F</option>
+        </select>
+        <input type="number" placeholder="3" min="0" max="10" step="0.5">
+        <button class="remove-btn" onclick="removeRow(this)" title="Remove">×</button>
+      </div>
+      <div class="course-row">
+        <input type="text" placeholder="e.g. English">
+        <select>
+          <option value="">--</option>
+          <option value="4.0">A+</option>
+          <option value="4.0">A</option>
+          <option value="3.7">A-</option>
+          <option value="3.3">B+</option>
+          <option value="3.0">B</option>
+          <option value="2.7">B-</option>
+          <option value="2.3">C+</option>
+          <option value="2.0">C</option>
+          <option value="1.7">C-</option>
+          <option value="1.3">D+</option>
+          <option value="1.0">D</option>
+          <option value="0.7">D-</option>
+          <option value="0.0">F</option>
+        </select>
+        <input type="number" placeholder="3" min="0" max="10" step="0.5">
+        <button class="remove-btn" onclick="removeRow(this)" title="Remove">×</button>
+      </div>
+      <div class="course-row">
+        <input type="text" placeholder="e.g. Biology">
+        <select>
+          <option value="">--</option>
+          <option value="4.0">A+</option>
+          <option value="4.0">A</option>
+          <option value="3.7">A-</option>
+          <option value="3.3">B+</option>
+          <option value="3.0">B</option>
+          <option value="2.7">B-</option>
+          <option value="2.3">C+</option>
+          <option value="2.0">C</option>
+          <option value="1.7">C-</option>
+          <option value="1.3">D+</option>
+          <option value="1.0">D</option>
+          <option value="0.7">D-</option>
+          <option value="0.0">F</option>
+        </select>
+        <input type="number" placeholder="4" min="0" max="10" step="0.5">
+        <button class="remove-btn" onclick="removeRow(this)" title="Remove">×</button>
+      </div>
+      <div class="course-row">
+        <input type="text" placeholder="e.g. History">
+        <select>
+          <option value="">--</option>
+          <option value="4.0">A+</option>
+          <option value="4.0">A</option>
+          <option value="3.7">A-</option>
+          <option value="3.3">B+</option>
+          <option value="3.0">B</option>
+          <option value="2.7">B-</option>
+          <option value="2.3">C+</option>
+          <option value="2.0">C</option>
+          <option value="1.7">C-</option>
+          <option value="1.3">D+</option>
+          <option value="1.0">D</option>
+          <option value="0.7">D-</option>
+          <option value="0.0">F</option>
+        </select>
+        <input type="number" placeholder="3" min="0" max="10" step="0.5">
+        <button class="remove-btn" onclick="removeRow(this)" title="Remove">×</button>
+      </div>
+    </div>
+
+    <button class="add-course-btn" onclick="addCourse()">+ Add Another Course</button>
+
+    <div class="cumulative-section">
+      <div class="cumulative-toggle">
+        <input type="checkbox" id="cumulativeCheck" onchange="toggleCumulative()">
+        <label for="cumulativeCheck">Include previous GPA (cumulative)</label>
+      </div>
+      <div class="cumulative-fields" id="cumulativeFields">
+        <div class="input-group">
+          <label>Previous GPA</label>
+          <input type="number" id="prevGpa" placeholder="3.5" min="0" max="4" step="0.01">
+        </div>
+        <div class="input-group">
+          <label>Previous Credits</label>
+          <input type="number" id="prevCredits" placeholder="30" min="0" step="0.5">
+        </div>
+      </div>
+    </div>
+
+    <button class="calc-btn" onclick="calculateGPA()">Calculate My GPA →</button>
+  </div>
+
+  <!-- Result -->
+  <div class="result-card" id="resultCard">
+    <div class="result-grid">
+      <div class="result-box">
+        <div class="label">Semester GPA</div>
+        <div class="number" id="semesterGpa">—</div>
+        <div class="sub" id="semesterLetter">—</div>
+      </div>
+      <div class="result-box">
+        <div class="label">Cumulative GPA</div>
+        <div class="number" id="cumulativeGpa">—</div>
+        <div class="sub" id="cumulativeSub">—</div>
+      </div>
+    </div>
+
+    <table class="breakdown-table">
+      <thead>
+        <tr><th>Course</th><th>Grade</th><th>Credits</th><th>Points</th></tr>
+      </thead>
+      <tbody id="breakdownBody"></tbody>
+    </table>
+
+    <div class="ai-tip" id="aiTip">
+      <div class="ai-tip-header">⚡ Smart Tip</div>
+      <p id="aiTipText">—</p>
+    </div>
+  </div>
+
+  <!-- Other tools -->
+  <div class="tools-section">
+    <h2>More tools</h2>
+    <div class="tool-grid">
+      <a href="index.html" class="tool-link">
+        <div class="tool-icon">🎯</div>
+        <div class="tool-name">Final Grade Calc</div>
+        <div class="tool-desc">What score do you need on your final exam?</div>
+      </a>
+      <a href="#" class="tool-link">
+        <div class="tool-icon">📝</div>
+        <div class="tool-name">Grade Average</div>
+        <div class="tool-desc">Weighted average across all assignments</div>
+        <div class="coming-soon">Coming soon</div>
+      </a>
+      <a href="#" class="tool-link">
+        <div class="tool-icon">📈</div>
+        <div class="tool-name">Target Planner</div>
+        <div class="tool-desc">What scores do you need going forward?</div>
+        <div class="coming-soon">Coming soon</div>
+      </a>
+      <a href="#" class="tool-link">
+        <div class="tool-icon">🧠</div>
+        <div class="tool-name">AI Study Plan</div>
+        <div class="tool-desc">Personalized study schedule for your exams</div>
+        <div class="coming-soon">Coming soon</div>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <p>GradeChimp — free student tools, forever.</p>
+    <p style="margin-top: 6px;">Built with 💜 for students everywhere.</p>
+  </footer>
+</div>
+
+<script>
+  function addCourse() {
+    const list = document.getElementById('courseList');
+    const row = document.createElement('div');
+    row.className = 'course-row';
+    row.innerHTML = `
+      <input type="text" placeholder="Course name">
+      <select>
+        <option value="">--</option>
+        <option value="4.0">A+</option>
+          <option value="4.0">A</option>
+        <option value="3.7">A-</option>
+        <option value="3.3">B+</option>
+        <option value="3.0">B</option>
+        <option value="2.7">B-</option>
+        <option value="2.3">C+</option>
+        <option value="2.0">C</option>
+        <option value="1.7">C-</option>
+        <option value="1.3">D+</option>
+        <option value="1.0">D</option>
+        <option value="0.7">D-</option>
+        <option value="0.0">F</option>
+      </select>
+      <input type="number" placeholder="3" min="0" max="10" step="0.5">
+      <button class="remove-btn" onclick="removeRow(this)" title="Remove">×</button>
+    `;
+    list.appendChild(row);
+  }
+
+  function removeRow(btn) {
+    const rows = document.querySelectorAll('.course-row');
+    if (rows.length > 1) {
+      btn.parentElement.remove();
+    }
+  }
+
+  function toggleCumulative() {
+    const fields = document.getElementById('cumulativeFields');
+    const check = document.getElementById('cumulativeCheck');
+    fields.classList.toggle('visible', check.checked);
+  }
+
+  function getLetterFromGpa(gpa) {
+    if (gpa >= 3.85) return 'A';
+    if (gpa >= 3.5) return 'A-';
+    if (gpa >= 3.15) return 'B+';
+    if (gpa >= 2.85) return 'B';
+    if (gpa >= 2.5) return 'B-';
+    if (gpa >= 2.15) return 'C+';
+    if (gpa >= 1.85) return 'C';
+    if (gpa >= 1.5) return 'C-';
+    if (gpa >= 1.15) return 'D+';
+    if (gpa >= 0.85) return 'D';
+    if (gpa >= 0.5) return 'D-';
+    return 'F';
+  }
+
+  function getGpaClass(gpa) {
+    if (gpa >= 3.5) return 'gpa-excellent';
+    if (gpa >= 2.5) return 'gpa-good';
+    if (gpa >= 1.5) return 'gpa-average';
+    return 'gpa-low';
+  }
+
+  function getGradeLabel(val) {
+    const map = { '4.0': 'A', '3.7': 'A-', '3.3': 'B+', '3.0': 'B', '2.7': 'B-', '2.3': 'C+', '2.0': 'C', '1.7': 'C-', '1.3': 'D+', '1.0': 'D', '0.7': 'D-', '0.0': 'F' };
+    return map[val] || '—';
+  }
+
+  function calculateGPA() {
+    const rows = document.querySelectorAll('.course-row');
+    let totalPoints = 0;
+    let totalCredits = 0;
+    let courses = [];
+
+    rows.forEach(row => {
+      const name = row.querySelector('input[type="text"]').value || 'Unnamed';
+      const grade = row.querySelector('select').value;
+      const credits = parseFloat(row.querySelector('input[type="number"]').value);
+
+      if (grade !== '' && !isNaN(credits) && credits > 0) {
+        const gradeVal = parseFloat(grade);
+        const points = gradeVal * credits;
+        totalPoints += points;
+        totalCredits += credits;
+        courses.push({ name, grade: gradeVal, gradeLabel: getGradeLabel(grade), credits, points });
+      }
+    });
+
+    if (courses.length === 0) {
+      alert('Please enter at least one course with a grade and credits.');
+      return;
+    }
+
+    const semesterGpa = totalPoints / totalCredits;
+
+    // Cumulative
+    let cumulativeGpa = semesterGpa;
+    let cumulativeLabel = '';
+    const check = document.getElementById('cumulativeCheck');
+
+    if (check.checked) {
+      const prevGpa = parseFloat(document.getElementById('prevGpa').value);
+      const prevCredits = parseFloat(document.getElementById('prevCredits').value);
+      if (!isNaN(prevGpa) && !isNaN(prevCredits) && prevCredits > 0) {
+        const prevPoints = prevGpa * prevCredits;
+        cumulativeGpa = (prevPoints + totalPoints) / (prevCredits + totalCredits);
+        cumulativeLabel = `${(prevCredits + totalCredits).toFixed(1)} total credits`;
+      }
+    } else {
+      cumulativeLabel = 'Add previous GPA above';
+    }
+
+    // Display
+    const resultCard = document.getElementById('resultCard');
+    resultCard.classList.add('visible');
+
+    const semEl = document.getElementById('semesterGpa');
+    semEl.textContent = semesterGpa.toFixed(2);
+    semEl.className = 'number ' + getGpaClass(semesterGpa);
+    document.getElementById('semesterLetter').textContent = getLetterFromGpa(semesterGpa) + ' · ' + totalCredits + ' credits';
+
+    const cumEl = document.getElementById('cumulativeGpa');
+    cumEl.textContent = cumulativeGpa.toFixed(2);
+    cumEl.className = 'number ' + getGpaClass(cumulativeGpa);
+    document.getElementById('cumulativeSub').textContent = cumulativeLabel;
+
+    // Breakdown table
+    const tbody = document.getElementById('breakdownBody');
+    tbody.innerHTML = '';
+    courses.forEach(c => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${c.name}</td><td>${c.gradeLabel}</td><td>${c.credits}</td><td>${c.points.toFixed(1)}</td>`;
+      tbody.appendChild(tr);
+    });
+    const totalRow = document.createElement('tr');
+    totalRow.innerHTML = `<td style="font-weight:700">Total</td><td></td><td style="font-weight:700">${totalCredits}</td><td style="font-weight:700">${totalPoints.toFixed(1)}</td>`;
+    tbody.appendChild(totalRow);
+
+    // AI Tip
+    const tipEl = document.getElementById('aiTipText');
+    if (semesterGpa >= 3.7) {
+      tipEl.textContent = "You're crushing it. A GPA above 3.7 puts you in the top tier for scholarships, Dean's List, and competitive programs. Keep doing what you're doing — consistency is your superpower.";
+    } else if (semesterGpa >= 3.0) {
+      tipEl.textContent = "Solid GPA. To push it higher, focus on your lowest grade — improving one class from a B to an A has a bigger impact than maintaining an A you already have. Talk to that professor during office hours.";
+    } else if (semesterGpa >= 2.0) {
+      tipEl.textContent = "You're passing, but there's room to grow. Look at which classes are dragging you down — are they hard classes or ones where you're not putting in the hours? Be honest with yourself, then make a study plan for just one class.";
+    } else {
+      tipEl.textContent = "This is a tough spot, but it's not permanent. Talk to your academic advisor ASAP — many schools offer grade forgiveness, tutoring, or the ability to retake classes. One bad semester doesn't define your future.";
+    }
+
+    resultCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+</script>
+
+</body>
+</html>
