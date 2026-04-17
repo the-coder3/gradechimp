@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Study Plan Generator — Free Study Schedule Maker | GradeChimp</title>
+<meta name="description" content="Free AI study plan generator. Enter your exams and deadlines and get a personalized day-by-day study schedule instantly. No signup required.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--surface:#13131a;--surface2:#1a1a24;--border:#2a2a3a;--text:#e8e8f0;--text-dim:#8888a0;--accent:#6c5ce7;--accent-glow:#7c6cf7;--accent-light:rgba(108,92,231,.15);--green:#00d2a0;--green-glow:rgba(0,210,160,.2);--red:#ff6b6b;--red-glow:rgba(255,107,107,.2);--yellow:#ffd93d;--yellow-glow:rgba(255,217,61,.2);--radius:16px;--radius-sm:10px}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+  body::before{content:'';position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(108,92,231,.08) 0%,transparent 70%);pointer-events:none;z-index:0}
+  .container{max-width:620px;margin:0 auto;padding:20px 16px 60px;position:relative;z-index:1}
+  nav{display:flex;justify-content:space-between;align-items:center;padding:16px 0 40px}
+  .logo{font-weight:800;font-size:1.3rem;letter-spacing:-.5px;display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--text)}
+  .logo-dot{width:10px;height:10px;background:var(--accent);border-radius:50%;box-shadow:0 0 12px var(--accent-glow);animation:pulse-dot 2s ease-in-out infinite}
+  @keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.85)}}
+  .nav-links{display:flex;gap:6px}
+  .nav-links a{color:var(--text-dim);text-decoration:none;font-size:.85rem;font-weight:500;padding:6px 14px;border-radius:20px;transition:all .2s}
+  .nav-links a:hover,.nav-links a.active{color:var(--text);background:var(--surface2)}
+  .hero{text-align:center;margin-bottom:40px}
+  .hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--accent-light);border:1px solid rgba(108,92,231,.25);color:var(--accent-glow);font-size:.75rem;font-weight:600;padding:5px 14px;border-radius:20px;margin-bottom:16px;letter-spacing:.5px;text-transform:uppercase}
+  .hero h1{font-size:clamp(1.8rem,5vw,2.4rem);font-weight:800;line-height:1.15;letter-spacing:-1px;margin-bottom:10px}
+  .hero h1 span{background:linear-gradient(135deg,var(--accent-glow),#a29bfe);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .hero p{color:var(--text-dim);font-size:1rem;max-width:420px;margin:0 auto;line-height:1.5}
+  .calc-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px;position:relative;overflow:hidden}
+  .calc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.5}
+  .input-group{margin-bottom:20px}
+  .input-group label{display:block;font-size:.82rem;font-weight:600;color:var(--text-dim);margin-bottom:8px;letter-spacing:.3px;text-transform:uppercase}
+  .input-field input,.input-field select{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:500;color:var(--text);outline:none;transition:all .2s}
+  .input-field input:focus,.input-field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light)}
+  .input-field input::placeholder{color:#444460}
+  .input-field select{cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238888a0' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+  .input-field select option{background:var(--surface);color:var(--text)}
+  .exam-header{display:grid;grid-template-columns:1fr 120px 80px 40px;gap:10px;margin-bottom:8px}
+  .exam-header span{font-size:.75rem;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:.3px}
+  .exam-row{display:grid;grid-template-columns:1fr 120px 80px 40px;gap:10px;margin-bottom:8px;align-items:center;animation:slideUp .2s ease}
+  @keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .exam-row input,.exam-row select{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:12px;font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:500;color:var(--text);outline:none;transition:all .2s}
+  .exam-row input:focus,.exam-row select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light)}
+  .exam-row input::placeholder{color:#444460}
+  .exam-row select{cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238888a0' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+  .exam-row select option{background:var(--surface);color:var(--text)}
+  .remove-btn{background:none;border:1.5px solid var(--border);border-radius:var(--radius-sm);color:var(--text-dim);cursor:pointer;font-size:1.1rem;padding:10px 0;transition:all .15s;display:flex;align-items:center;justify-content:center}
+  .remove-btn:hover{border-color:var(--red);color:var(--red);background:var(--red-glow)}
+  .add-btn{width:100%;padding:12px;border:1.5px dashed var(--border);border-radius:var(--radius-sm);background:none;color:var(--text-dim);font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:500;cursor:pointer;transition:all .2s;margin-top:4px;margin-bottom:16px}
+  .add-btn:hover{border-color:var(--accent);color:var(--accent-glow);background:var(--accent-light)}
+  .calc-btn{width:100%;padding:16px;border:none;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--accent),#7c6cf7);color:white;font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.3px}
+  .calc-btn:hover{transform:translateY(-1px);box-shadow:0 8px 25px rgba(108,92,231,.35)}
+  .result-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px;display:none;animation:slideUp .35s ease}
+  .result-card.visible{display:block}
+  .plan-day{background:var(--surface2);border-radius:var(--radius-sm);padding:16px;margin-bottom:10px}
+  .plan-day-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .plan-day-title{font-weight:700;font-size:.95rem}
+  .plan-day-date{font-size:.8rem;color:var(--text-dim);font-family:'JetBrains Mono',monospace}
+  .plan-task{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:.88rem}
+  .plan-task:last-child{border-bottom:none}
+  .plan-task .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .plan-task .time{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--text-dim);min-width:50px}
+  .dot-high{background:var(--red)}.dot-med{background:var(--yellow)}.dot-low{background:var(--green)}
+  .ai-tip{margin-top:16px;background:var(--accent-light);border:1px solid rgba(108,92,231,.2);border-radius:var(--radius-sm);padding:14px 16px}
+  .ai-tip-header{display:flex;align-items:center;gap:6px;font-size:.75rem;font-weight:700;color:var(--accent-glow);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+  .ai-tip p{color:var(--text);font-size:.88rem;line-height:1.55}
+  .tools-section{margin-top:40px}
+  .tools-section h2{font-size:1.1rem;font-weight:700;margin-bottom:14px;letter-spacing:-.3px}
+  .tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .tool-link{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px 16px;text-decoration:none;color:var(--text);transition:all .2s}
+  .tool-link:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .tool-link .tool-icon{font-size:1.4rem;margin-bottom:8px}.tool-link .tool-name{font-size:.88rem;font-weight:600;margin-bottom:3px}.tool-link .tool-desc{font-size:.75rem;color:var(--text-dim);line-height:1.4}
+  footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--border);text-align:center;color:var(--text-dim);font-size:.78rem}
+</style>
+</head>
+<body>
+<div class="container">
+  <nav>
+    <a href="index.html" class="logo"><div class="logo-dot"></div>GradeChimp</a>
+    <div class="nav-links">
+      <a href="index.html">Final Grade</a>
+      <a href="gpa.html">GPA</a>
+      <a href="grade-average.html">Grade Avg</a>
+    </div>
+  </nav>
+  <div class="hero">
+    <div class="hero-badge">✦ AI-Powered</div>
+    <h1>Generate your <span>study plan</span></h1>
+    <p>Add your upcoming exams and deadlines. We'll create a day-by-day study schedule for you.</p>
+  </div>
+  <div class="calc-card">
+    <div class="input-group">
+      <label>How many hours can you study per day?</label>
+      <div class="input-field">
+        <select id="hoursPerDay">
+          <option value="1">1 hour</option>
+          <option value="2" selected>2 hours</option>
+          <option value="3">3 hours</option>
+          <option value="4">4+ hours</option>
+        </select>
+      </div>
+    </div>
+    <div class="input-group">
+      <label>Your exams & deadlines</label>
+      <div class="exam-header"><span>Subject</span><span>Date</span><span>Difficulty</span><span></span></div>
+      <div id="examList">
+        <div class="exam-row">
+          <input type="text" placeholder="e.g. Math Final">
+          <input type="date">
+          <select><option value="hard">Hard</option><option value="medium" selected>Medium</option><option value="easy">Easy</option></select>
+          <button class="remove-btn" onclick="removeExam(this)">×</button>
+        </div>
+        <div class="exam-row">
+          <input type="text" placeholder="e.g. English Essay">
+          <input type="date">
+          <select><option value="hard">Hard</option><option value="medium" selected>Medium</option><option value="easy">Easy</option></select>
+          <button class="remove-btn" onclick="removeExam(this)">×</button>
+        </div>
+        <div class="exam-row">
+          <input type="text" placeholder="e.g. Science Quiz">
+          <input type="date">
+          <select><option value="hard">Hard</option><option value="medium" selected>Medium</option><option value="easy">Easy</option></select>
+          <button class="remove-btn" onclick="removeExam(this)">×</button>
+        </div>
+      </div>
+      <button class="add-btn" onclick="addExam()">+ Add Exam</button>
+    </div>
+    <button class="calc-btn" onclick="generatePlan()">Generate My Study Plan →</button>
+  </div>
+  <div class="result-card" id="resultCard">
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="font-size:.82rem;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px">Your Personalized Study Plan</div>
+      <div style="font-size:.9rem;color:var(--accent-glow)" id="planSummary">—</div>
+    </div>
+    <div id="planOutput"></div>
+    <div class="ai-tip">
+      <div class="ai-tip-header">⚡ Study Tips</div>
+      <p id="aiTipText">—</p>
+    </div>
+  </div>
+  <div class="tools-section">
+    <h2>More tools</h2>
+    <div class="tool-grid">
+      <a href="index.html" class="tool-link"><div class="tool-icon">🎯</div><div class="tool-name">Final Grade Calc</div><div class="tool-desc">What score do you need on your final?</div></a>
+      <a href="gpa.html" class="tool-link"><div class="tool-icon">📊</div><div class="tool-name">GPA Calculator</div><div class="tool-desc">Calculate your semester & cumulative GPA</div></a>
+      <a href="grade-average.html" class="tool-link"><div class="tool-icon">📝</div><div class="tool-name">Grade Average</div><div class="tool-desc">Weighted average across all assignments</div></a>
+      <a href="target.html" class="tool-link"><div class="tool-icon">📈</div><div class="tool-name">Target Planner</div><div class="tool-desc">What scores do you need going forward?</div></a>
+    </div>
+  </div>
+  <footer><p>GradeChimp — free student tools, forever.</p><p style="margin-top:6px">Built with 💜 for students everywhere.</p></footer>
+</div>
+<script>
+function addExam(){const l=document.getElementById('examList');const r=document.createElement('div');r.className='exam-row';r.innerHTML='<input type="text" placeholder="Subject"><input type="date"><select><option value="hard">Hard</option><option value="medium" selected>Medium</option><option value="easy">Easy</option></select><button class="remove-btn" onclick="removeExam(this)">×</button>';l.appendChild(r)}
+function removeExam(b){if(document.querySelectorAll('.exam-row').length>1)b.parentElement.remove()}
+function generatePlan(){
+  const hours=parseInt(document.getElementById('hoursPerDay').value);
+  const rows=document.querySelectorAll('.exam-row');let exams=[];
+  const today=new Date();today.setHours(0,0,0,0);
+  rows.forEach(r=>{const inputs=r.querySelectorAll('input');const sel=r.querySelector('select');const name=inputs[0].value||'Unnamed';const dateStr=inputs[1].value;const diff=sel.value;
+    if(dateStr){const date=new Date(dateStr+'T00:00:00');const daysUntil=Math.ceil((date-today)/(1000*60*60*24));if(daysUntil>0)exams.push({name,date,dateStr,daysUntil,diff,weight:diff==='hard'?3:diff==='medium'?2:1})}});
+  if(exams.length===0){alert('Please add at least one exam with a future date.');return}
+  exams.sort((a,b)=>a.daysUntil-b.daysUntil);
+  const totalDays=exams[exams.length-1].daysUntil;
+  const planDays=Math.min(totalDays,14);
+  const totalWeight=exams.reduce((s,e)=>s+e.weight,0);
+  const output=document.getElementById('planOutput');output.innerHTML='';
+  for(let d=1;d<=planDays;d++){
+    const date=new Date(today);date.setDate(date.getDate()+d);
+    const dayName=date.toLocaleDateString('en-US',{weekday:'long'});
+    const dateLabel=date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const dayDiv=document.createElement('div');dayDiv.className='plan-day';
+    let headerHTML=`<div class="plan-day-header"><div class="plan-day-title">Day ${d} — ${dayName}</div><div class="plan-day-date">${dateLabel}</div></div>`;
+    let tasksHTML='';
+    const minutesPerDay=hours*60;
+    let minutesLeft=minutesPerDay;
+    exams.forEach(e=>{
+      if(d<=e.daysUntil){
+        const share=Math.round((e.weight/totalWeight)*minutesPerDay);
+        const mins=Math.min(share,minutesLeft);if(mins<=0)return;minutesLeft-=mins;
+        const dotClass=e.diff==='hard'?'dot-high':e.diff==='medium'?'dot-med':'dot-low';
+        const timeLabel=mins>=60?Math.floor(mins/60)+'h '+(mins%60>0?mins%60+'m':''):mins+'m';
+        let task=`Study ${e.name}`;
+        if(d===e.daysUntil)task=`🔴 EXAM DAY: ${e.name} — Final review!`;
+        else if(d===e.daysUntil-1)task=`⚡ ${e.name} — Last day to study! Practice problems & review notes.`;
+        else if(d<=2)task=`${e.name} — Review notes & identify weak areas`;
+        else task=`${e.name} — Practice problems & active recall`;
+        tasksHTML+=`<div class="plan-task"><div class="dot ${dotClass}"></div><div class="time">${timeLabel}</div><div>${task}</div></div>`;
+      }
+    });
+    if(tasksHTML==='')continue;
+    dayDiv.innerHTML=headerHTML+tasksHTML;output.appendChild(dayDiv);
+  }
+  document.getElementById('planSummary').textContent=`${exams.length} exams · ${planDays} days · ${hours}h/day`;
+  const rc=document.getElementById('resultCard');rc.classList.add('visible');
+  const tip=document.getElementById('aiTipText');
+  tip.textContent="Use the Pomodoro technique: study for 25 minutes, break for 5. After 4 rounds, take a 15-minute break. Active recall (testing yourself) is 3x more effective than re-reading notes. And get 7-8 hours of sleep — your brain consolidates memories while you sleep.";
+  rc.scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>

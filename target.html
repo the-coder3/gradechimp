@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Target Grade Planner — What Grades Do I Need? | GradeChimp</title>
+<meta name="description" content="Free target grade planner. Enter your current grade and remaining assignments to find out exactly what scores you need to hit your target grade.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--surface:#13131a;--surface2:#1a1a24;--border:#2a2a3a;--text:#e8e8f0;--text-dim:#8888a0;--accent:#6c5ce7;--accent-glow:#7c6cf7;--accent-light:rgba(108,92,231,.15);--green:#00d2a0;--green-glow:rgba(0,210,160,.2);--red:#ff6b6b;--red-glow:rgba(255,107,107,.2);--yellow:#ffd93d;--yellow-glow:rgba(255,217,61,.2);--radius:16px;--radius-sm:10px}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+  body::before{content:'';position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(108,92,231,.08) 0%,transparent 70%);pointer-events:none;z-index:0}
+  .container{max-width:620px;margin:0 auto;padding:20px 16px 60px;position:relative;z-index:1}
+  nav{display:flex;justify-content:space-between;align-items:center;padding:16px 0 40px}
+  .logo{font-weight:800;font-size:1.3rem;letter-spacing:-.5px;display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--text)}
+  .logo-dot{width:10px;height:10px;background:var(--accent);border-radius:50%;box-shadow:0 0 12px var(--accent-glow);animation:pulse-dot 2s ease-in-out infinite}
+  @keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.85)}}
+  .nav-links{display:flex;gap:6px}
+  .nav-links a{color:var(--text-dim);text-decoration:none;font-size:.85rem;font-weight:500;padding:6px 14px;border-radius:20px;transition:all .2s}
+  .nav-links a:hover,.nav-links a.active{color:var(--text);background:var(--surface2)}
+  .hero{text-align:center;margin-bottom:40px}
+  .hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--accent-light);border:1px solid rgba(108,92,231,.25);color:var(--accent-glow);font-size:.75rem;font-weight:600;padding:5px 14px;border-radius:20px;margin-bottom:16px;letter-spacing:.5px;text-transform:uppercase}
+  .hero h1{font-size:clamp(1.8rem,5vw,2.4rem);font-weight:800;line-height:1.15;letter-spacing:-1px;margin-bottom:10px}
+  .hero h1 span{background:linear-gradient(135deg,var(--accent-glow),#a29bfe);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .hero p{color:var(--text-dim);font-size:1rem;max-width:420px;margin:0 auto;line-height:1.5}
+  .calc-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px;position:relative;overflow:hidden}
+  .calc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.5}
+  .input-group{margin-bottom:20px}
+  .input-group label{display:block;font-size:.82rem;font-weight:600;color:var(--text-dim);margin-bottom:8px;letter-spacing:.3px;text-transform:uppercase}
+  .input-field{position:relative}
+  .input-field input{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:500;color:var(--text);outline:none;transition:all .2s}
+  .input-field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light)}
+  .input-field input::placeholder{color:#444460}
+  .input-suffix{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--text-dim);font-size:.9rem;font-weight:500;pointer-events:none}
+  input[type="number"]{-moz-appearance:textfield}input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none}
+  .row-header{display:grid;grid-template-columns:1fr 80px;gap:10px;margin-bottom:8px}
+  .row-header span{font-size:.75rem;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:.3px}
+  .remain-row{display:grid;grid-template-columns:1fr 80px;gap:10px;margin-bottom:8px;align-items:center}
+  .remain-row input{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:12px;font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:500;color:var(--text);outline:none;transition:all .2s}
+  .remain-row input[type="number"]{font-family:'JetBrains Mono',monospace}
+  .remain-row input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light)}
+  .remain-row input::placeholder{color:#444460}
+  .calc-btn{width:100%;padding:16px;border:none;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--accent),#7c6cf7);color:white;font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.3px;margin-top:8px}
+  .calc-btn:hover{transform:translateY(-1px);box-shadow:0 8px 25px rgba(108,92,231,.35)}
+  .result-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px;display:none;animation:slideUp .35s ease}
+  @keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  .result-card.visible{display:block}
+  .result-big{text-align:center;margin-bottom:20px}
+  .result-big .label{font-size:.82rem;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:.3px;margin-bottom:8px}
+  .result-big .number{font-family:'JetBrains Mono',monospace;font-size:2.8rem;font-weight:700;letter-spacing:-2px}
+  .result-big .sub{font-size:.9rem;color:var(--text-dim);margin-top:6px}
+  .gpa-excellent{color:var(--green)}.gpa-good{color:#a29bfe}.gpa-average{color:var(--yellow)}.gpa-low{color:var(--red)}
+  .scenario-table{width:100%;border-collapse:collapse;margin-top:16px}
+  .scenario-table th,.scenario-table td{padding:10px 12px;text-align:left;font-size:.85rem;border-bottom:1px solid var(--border)}
+  .scenario-table th{color:var(--text-dim);font-weight:600;font-size:.72rem;text-transform:uppercase;letter-spacing:.5px}
+  .scenario-table tr:last-child td{border-bottom:none}
+  .scenario-table tr.highlight td{background:var(--accent-light);color:var(--accent-glow);font-weight:600}
+  .ai-tip{margin-top:16px;background:var(--accent-light);border:1px solid rgba(108,92,231,.2);border-radius:var(--radius-sm);padding:14px 16px}
+  .ai-tip-header{display:flex;align-items:center;gap:6px;font-size:.75rem;font-weight:700;color:var(--accent-glow);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+  .ai-tip p{color:var(--text);font-size:.88rem;line-height:1.55}
+  .tools-section{margin-top:40px}
+  .tools-section h2{font-size:1.1rem;font-weight:700;margin-bottom:14px;letter-spacing:-.3px}
+  .tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .tool-link{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px 16px;text-decoration:none;color:var(--text);transition:all .2s}
+  .tool-link:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .tool-link .tool-icon{font-size:1.4rem;margin-bottom:8px}.tool-link .tool-name{font-size:.88rem;font-weight:600;margin-bottom:3px}.tool-link .tool-desc{font-size:.75rem;color:var(--text-dim);line-height:1.4}
+  footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--border);text-align:center;color:var(--text-dim);font-size:.78rem}
+</style>
+</head>
+<body>
+<div class="container">
+  <nav>
+    <a href="index.html" class="logo"><div class="logo-dot"></div>GradeChimp</a>
+    <div class="nav-links">
+      <a href="index.html">Final Grade</a>
+      <a href="gpa.html">GPA</a>
+      <a href="grade-average.html">Grade Avg</a>
+    </div>
+  </nav>
+  <div class="hero">
+    <div class="hero-badge">✦ Free Forever</div>
+    <h1>What grades do I <span>need</span>?</h1>
+    <p>Enter your current grade, your target, and your remaining assignments. We'll tell you exactly what to score.</p>
+  </div>
+  <div class="calc-card">
+    <div class="input-group">
+      <label>My current overall grade</label>
+      <div class="input-field"><input type="number" id="currentGrade" placeholder="82" min="0" max="200"><span class="input-suffix">%</span></div>
+    </div>
+    <div class="input-group">
+      <label>Weight of grades so far</label>
+      <div class="input-field"><input type="number" id="currentWeight" placeholder="60" min="0" max="100"><span class="input-suffix">%</span></div>
+    </div>
+    <div class="input-group">
+      <label>Target grade I want</label>
+      <div class="input-field"><input type="number" id="targetGrade" placeholder="90" min="0" max="100"><span class="input-suffix">%</span></div>
+    </div>
+    <div class="input-group">
+      <label>Remaining assignments</label>
+      <div class="row-header"><span>Assignment</span><span>Weight %</span></div>
+      <div id="remainList">
+        <div class="remain-row"><input type="text" placeholder="e.g. Project"><input type="number" placeholder="15" min="0" max="100"></div>
+        <div class="remain-row"><input type="text" placeholder="e.g. Final Exam"><input type="number" placeholder="25" min="0" max="100"></div>
+      </div>
+    </div>
+    <button class="calc-btn" onclick="calculate()">Calculate What I Need →</button>
+  </div>
+  <div class="result-card" id="resultCard">
+    <div class="result-big">
+      <div class="label">Average needed on remaining work</div>
+      <div class="number" id="resultNumber">—</div>
+      <div class="sub" id="resultSub">—</div>
+    </div>
+    <table class="scenario-table" id="scenarioTable">
+      <thead><tr><th>Assignment</th><th>Weight</th><th>Score Needed</th></tr></thead>
+      <tbody id="scenarioBody"></tbody>
+    </table>
+    <div class="ai-tip">
+      <div class="ai-tip-header">⚡ Smart Tip</div>
+      <p id="aiTipText">—</p>
+    </div>
+  </div>
+  <div class="tools-section">
+    <h2>More tools</h2>
+    <div class="tool-grid">
+      <a href="index.html" class="tool-link"><div class="tool-icon">🎯</div><div class="tool-name">Final Grade Calc</div><div class="tool-desc">What score do you need on your final?</div></a>
+      <a href="gpa.html" class="tool-link"><div class="tool-icon">📊</div><div class="tool-name">GPA Calculator</div><div class="tool-desc">Calculate your semester & cumulative GPA</div></a>
+      <a href="grade-average.html" class="tool-link"><div class="tool-icon">📝</div><div class="tool-name">Grade Average</div><div class="tool-desc">Weighted average across all assignments</div></a>
+      <a href="study-plan.html" class="tool-link"><div class="tool-icon">🧠</div><div class="tool-name">AI Study Plan</div><div class="tool-desc">Personalized study schedule for exams</div></a>
+    </div>
+  </div>
+  <footer><p>GradeChimp — free student tools, forever.</p><p style="margin-top:6px">Built with 💜 for students everywhere.</p></footer>
+</div>
+<script>
+function calculate(){
+  const cur=parseFloat(document.getElementById('currentGrade').value);
+  const curW=parseFloat(document.getElementById('currentWeight').value);
+  const target=parseFloat(document.getElementById('targetGrade').value);
+  if(isNaN(cur)||isNaN(curW)||isNaN(target)){alert('Please fill in all fields.');return}
+  const rows=document.querySelectorAll('.remain-row');let remaining=[];
+  rows.forEach(r=>{const inputs=r.querySelectorAll('input');const name=inputs[0].value||'Unnamed';const weight=parseFloat(inputs[1].value);if(!isNaN(weight)&&weight>0)remaining.push({name,weight})});
+  if(remaining.length===0){alert('Please add at least one remaining assignment.');return}
+  const remainWeight=remaining.reduce((s,r)=>s+r.weight,0);
+  const pointsNeeded=target-(cur*curW/100);
+  const avgNeeded=pointsNeeded/(remainWeight/100);
+  const rc=document.getElementById('resultCard');rc.classList.add('visible');
+  const n=document.getElementById('resultNumber');
+  let cls='gpa-excellent';
+  if(avgNeeded<=0){n.textContent='0%';cls='gpa-excellent'}
+  else if(avgNeeded>100){n.textContent=avgNeeded.toFixed(1)+'%';cls='gpa-low'}
+  else{n.textContent=avgNeeded.toFixed(1)+'%';if(avgNeeded>95)cls='gpa-low';else if(avgNeeded>85)cls='gpa-average';else if(avgNeeded>70)cls='gpa-good';else cls='gpa-excellent'}
+  n.className='number '+cls;
+  const sub=document.getElementById('resultSub');
+  if(avgNeeded<=0)sub.textContent="You've already secured your target grade!";
+  else if(avgNeeded<=70)sub.textContent="Very achievable — you're in great shape.";
+  else if(avgNeeded<=85)sub.textContent="Doable with solid preparation.";
+  else if(avgNeeded<=95)sub.textContent="Challenging — you'll need to study hard.";
+  else if(avgNeeded<=100)sub.textContent="Tough but technically possible.";
+  else sub.textContent="Not possible with perfect scores. Consider talking to your teacher.";
+  const tbody=document.getElementById('scenarioBody');tbody.innerHTML='';
+  remaining.forEach(r=>{const needed=avgNeeded;const tr=document.createElement('tr');tr.innerHTML=`<td>${r.name}</td><td>${r.weight}%</td><td style="font-family:'JetBrains Mono',monospace;font-weight:600;color:${needed>100?'var(--red)':needed>90?'var(--yellow)':'var(--green)'}">${needed<=0?'Any score':needed.toFixed(1)+'%'}</td>`;tbody.appendChild(tr)});
+  const tip=document.getElementById('aiTipText');
+  if(avgNeeded<=0)tip.textContent="You could literally score 0 on everything remaining and still hit your target. But don't actually do that — keep pushing to finish strong.";
+  else if(avgNeeded<=70)tip.textContent="You have a comfortable cushion. Use this to your advantage — start studying for your hardest remaining assignment first while you have the buffer.";
+  else if(avgNeeded<=85)tip.textContent="You need consistent B+ level work on everything remaining. Create a study schedule that gives each assignment dedicated focus time. Don't cram.";
+  else if(avgNeeded<=100)tip.textContent="Every assignment matters now. Prioritize the highest-weighted ones first. Consider forming a study group or visiting office hours for your weakest topics.";
+  else tip.textContent="Even perfect scores won't get you there. Talk to your teacher about extra credit, grade curves, or if any past assignments can be redone. It's always worth asking.";
+  rc.scrollIntoView({behavior:'smooth',block:'center'})
+}
+</script>
+</body>
+</html>
