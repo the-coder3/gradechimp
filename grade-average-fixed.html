@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grade Average Calculator — Weighted Grade Calculator | GradeChimp</title>
+<meta name="description" content="Free weighted grade average calculator. Enter your assignments, tests, and homework with weights to calculate your overall class grade instantly.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--surface:#13131a;--surface2:#1a1a24;--border:#2a2a3a;--text:#e8e8f0;--text-dim:#8888a0;--accent:#6c5ce7;--accent-glow:#7c6cf7;--accent-light:rgba(108,92,231,.15);--green:#00d2a0;--red:#ff6b6b;--yellow:#ffd93d;--radius:16px;--radius-sm:10px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(108,92,231,.08) 0%,transparent 70%);pointer-events:none;z-index:0}
+.container{max-width:620px;margin:0 auto;padding:20px 16px 60px;position:relative;z-index:1}
+nav{display:flex;justify-content:space-between;align-items:center;padding:16px 0 40px}
+.logo{font-weight:800;font-size:1.3rem;letter-spacing:-.5px;display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--text)}
+.logo-dot{width:10px;height:10px;background:var(--accent);border-radius:50%;box-shadow:0 0 12px var(--accent-glow);animation:pulse-dot 2s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.85)}}
+.nav-links{display:flex;gap:6px}
+.nav-links a{color:var(--text-dim);text-decoration:none;font-size:.85rem;font-weight:500;padding:6px 14px;border-radius:20px;transition:all .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--text);background:var(--surface2)}
+.hero{text-align:center;margin-bottom:40px}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--accent-light);border:1px solid rgba(108,92,231,.25);color:var(--accent-glow);font-size:.75rem;font-weight:600;padding:5px 14px;border-radius:20px;margin-bottom:16px;letter-spacing:.5px;text-transform:uppercase}
+.hero h1{font-size:clamp(1.8rem,5vw,2.4rem);font-weight:800;line-height:1.15;letter-spacing:-1px;margin-bottom:10px}
+.hero h1 span{background:linear-gradient(135deg,var(--accent-glow),#a29bfe);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:var(--text-dim);font-size:1rem;max-width:420px;margin:0 auto;line-height:1.5}
+.calc-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px;position:relative;overflow:hidden}
+.calc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.5}
+.row-header{display:grid;grid-template-columns:1fr 80px 80px 40px;gap:10px;margin-bottom:8px;padding:0 2px}
+.row-header span{font-size:.75rem;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:.3px}
+.assign-row{display:grid;grid-template-columns:1fr 80px 80px 40px;gap:10px;margin-bottom:8px;align-items:center;animation:slideUp .2s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.assign-row input{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:12px;font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:500;color:var(--text);outline:none;transition:all .2s}
+.assign-row input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light)}
+.assign-row input::placeholder{color:#444460}
+.assign-row input[type="number"]{font-family:'JetBrains Mono',monospace}
+.remove-btn{background:none;border:1.5px solid var(--border);border-radius:var(--radius-sm);color:var(--text-dim);cursor:pointer;font-size:1.1rem;padding:10px 0;transition:all .15s;display:flex;align-items:center;justify-content:center}
+.remove-btn:hover{border-color:var(--red);color:var(--red);background:rgba(255,107,107,.2)}
+.add-btn{width:100%;padding:12px;border:1.5px dashed var(--border);border-radius:var(--radius-sm);background:none;color:var(--text-dim);font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:500;cursor:pointer;transition:all .2s;margin-top:4px;margin-bottom:16px}
+.add-btn:hover{border-color:var(--accent);color:var(--accent-glow);background:var(--accent-light)}
+.calc-btn{width:100%;padding:16px;border:none;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--accent),#7c6cf7);color:white;font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.3px}
+.calc-btn:hover{transform:translateY(-1px);box-shadow:0 8px 25px rgba(108,92,231,.35)}
+.result-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;margin-bottom:20px;display:none;animation:slideUp .35s ease}
+.result-card.visible{display:block}
+.result-big{text-align:center;margin-bottom:20px}
+.result-big .label{font-size:.82rem;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:.3px;margin-bottom:8px}
+.result-big .number{font-family:'JetBrains Mono',monospace;font-size:3rem;font-weight:700;letter-spacing:-2px}
+.result-big .letter{font-size:1.1rem;margin-top:4px;font-weight:600}
+.gpa-excellent{color:var(--green)}.gpa-good{color:#a29bfe}.gpa-average{color:var(--yellow)}.gpa-low{color:var(--red)}
+.breakdown-table{width:100%;border-collapse:collapse;margin-top:12px}
+.breakdown-table th,.breakdown-table td{padding:10px 12px;text-align:left;font-size:.85rem;border-bottom:1px solid var(--border)}
+.breakdown-table th{color:var(--text-dim);font-weight:600;font-size:.72rem;text-transform:uppercase;letter-spacing:.5px}
+.breakdown-table tr:last-child td{border-bottom:none}
+.ai-tip{margin-top:16px;background:var(--accent-light);border:1px solid rgba(108,92,231,.2);border-radius:var(--radius-sm);padding:14px 16px}
+.ai-tip-header{display:flex;align-items:center;gap:6px;font-size:.75rem;font-weight:700;color:var(--accent-glow);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.ai-tip p{color:var(--text);font-size:.88rem;line-height:1.55}
+.tools-section{margin-top:40px}
+.tools-section h2{font-size:1.1rem;font-weight:700;margin-bottom:14px;letter-spacing:-.3px}
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tool-link{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px 16px;text-decoration:none;color:var(--text);transition:all .2s}
+.tool-link:hover{border-color:var(--accent);transform:translateY(-2px)}
+.tool-link .tool-icon{font-size:1.4rem;margin-bottom:8px}
+.tool-link .tool-name{font-size:.88rem;font-weight:600;margin-bottom:3px}
+.tool-link .tool-desc{font-size:.75rem;color:var(--text-dim);line-height:1.4}
+footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--border);text-align:center;color:var(--text-dim);font-size:.78rem}
+</style>
+</head>
+<body>
+<div class="container">
+  <nav>
+    <a href="index.html" class="logo"><div class="logo-dot"></div>GradeChimp</a>
+    <div class="nav-links">
+      <a href="index.html">Final Grade</a>
+      <a href="gpa.html">GPA</a>
+      <a href="grade-average.html" class="active">Grade Avg</a>
+    </div>
+  </nav>
+  <div class="hero">
+    <div class="hero-badge">✦ Free Forever</div>
+    <h1>Calculate your <span>grade average</span></h1>
+    <p>Enter your assignments with scores and weights to see your overall class grade.</p>
+  </div>
+  <div class="calc-card">
+    <div class="row-header"><span>Assignment</span><span>Score %</span><span>Weight %</span><span></span></div>
+    <div id="assignList">
+      <div class="assign-row"><input type="text" placeholder="e.g. Midterm"><input type="number" placeholder="88" min="0" max="200"><input type="number" placeholder="30" min="0" max="100"><button class="remove-btn" onclick="removeRow(this)">×</button></div>
+      <div class="assign-row"><input type="text" placeholder="e.g. Homework"><input type="number" placeholder="95" min="0" max="200"><input type="number" placeholder="20" min="0" max="100"><button class="remove-btn" onclick="removeRow(this)">×</button></div>
+      <div class="assign-row"><input type="text" placeholder="e.g. Quizzes"><input type="number" placeholder="78" min="0" max="200"><input type="number" placeholder="15" min="0" max="100"><button class="remove-btn" onclick="removeRow(this)">×</button></div>
+      <div class="assign-row"><input type="text" placeholder="e.g. Project"><input type="number" placeholder="92" min="0" max="200"><input type="number" placeholder="20" min="0" max="100"><button class="remove-btn" onclick="removeRow(this)">×</button></div>
+      <div class="assign-row"><input type="text" placeholder="e.g. Final Exam"><input type="number" placeholder="85" min="0" max="200"><input type="number" placeholder="15" min="0" max="100"><button class="remove-btn" onclick="removeRow(this)">×</button></div>
+    </div>
+    <button class="add-btn" onclick="addRow()">+ Add Assignment</button>
+    <button class="calc-btn" onclick="calculate()">Calculate My Grade →</button>
+  </div>
+  <div class="result-card" id="resultCard">
+    <div class="result-big">
+      <div class="label">Your Overall Grade</div>
+      <div class="number" id="resultNumber">—</div>
+      <div class="letter" id="resultLetter">—</div>
+    </div>
+    <table class="breakdown-table">
+      <thead><tr><th>Assignment</th><th>Score</th><th>Weight</th><th>Weighted</th></tr></thead>
+      <tbody id="breakdownBody"></tbody>
+    </table>
+    <div class="ai-tip">
+      <div class="ai-tip-header">⚡ Smart Tip</div>
+      <p id="aiTipText">—</p>
+    </div>
+  </div>
+  <div class="tools-section">
+    <h2>More tools</h2>
+    <div class="tool-grid">
+      <a href="index.html" class="tool-link">
+        <div class="tool-icon">🎯</div>
+        <div class="tool-name">Final Grade Calc</div>
+        <div class="tool-desc">What score do you need on your final?</div>
+      </a>
+      <a href="gpa.html" class="tool-link">
+        <div class="tool-icon">📊</div>
+        <div class="tool-name">GPA Calculator</div>
+        <div class="tool-desc">Calculate your semester & cumulative GPA</div>
+      </a>
+      <a href="target.html" class="tool-link">
+        <div class="tool-icon">📈</div>
+        <div class="tool-name">Target Planner</div>
+        <div class="tool-desc">What scores do you need going forward?</div>
+      </a>
+      <a href="study-plan.html" class="tool-link">
+        <div class="tool-icon">🧠</div>
+        <div class="tool-name">AI Study Plan</div>
+        <div class="tool-desc">Personalized study schedule for your exams</div>
+      </a>
+    </div>
+  </div>
+  <footer>
+    <p>GradeChimp — free student tools, forever.</p>
+    <p style="margin-top:6px">Built with 💜 for students everywhere.</p>
+  </footer>
+</div>
+<script>
+function addRow(){
+  const l=document.getElementById('assignList');
+  const r=document.createElement('div');
+  r.className='assign-row';
+  r.innerHTML='<input type="text" placeholder="Assignment name"><input type="number" placeholder="Score" min="0" max="200"><input type="number" placeholder="Weight" min="0" max="100"><button class="remove-btn" onclick="removeRow(this)">×</button>';
+  l.appendChild(r);
+}
+function removeRow(b){if(document.querySelectorAll('.assign-row').length>1)b.parentElement.remove()}
+function getLetter(p){if(p>=97)return'A+';if(p>=93)return'A';if(p>=90)return'A-';if(p>=87)return'B+';if(p>=83)return'B';if(p>=80)return'B-';if(p>=77)return'C+';if(p>=73)return'C';if(p>=70)return'C-';if(p>=67)return'D+';if(p>=63)return'D';if(p>=60)return'D-';return'F'}
+function getClass(p){if(p>=90)return'gpa-excellent';if(p>=80)return'gpa-good';if(p>=70)return'gpa-average';return'gpa-low'}
+function calculate(){
+  const rows=document.querySelectorAll('.assign-row');
+  let items=[],totalWeighted=0,totalWeight=0;
+  rows.forEach(r=>{
+    const inputs=r.querySelectorAll('input');
+    const name=inputs[0].value||'Unnamed';
+    const score=parseFloat(inputs[1].value);
+    const weight=parseFloat(inputs[2].value);
+    if(!isNaN(score)&&!isNaN(weight)&&weight>0){
+      const w=score*weight/100;
+      totalWeighted+=w;
+      totalWeight+=weight;
+      items.push({name,score,weight,weighted:w});
+    }
+  });
+  if(items.length===0){alert('Please enter at least one assignment with a score and weight.');return}
+  const avg=totalWeighted/totalWeight*100;
+  const rc=document.getElementById('resultCard');
+  rc.classList.add('visible');
+  const n=document.getElementById('resultNumber');
+  n.textContent=avg.toFixed(1)+'%';
+  n.className='number '+getClass(avg);
+  const l=document.getElementById('resultLetter');
+  l.textContent=getLetter(avg);
+  l.className='letter '+getClass(avg);
+  const tbody=document.getElementById('breakdownBody');
+  tbody.innerHTML='';
+  items.forEach(i=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML='<td>'+i.name+'</td><td>'+i.score+'%</td><td>'+i.weight+'%</td><td>'+i.weighted.toFixed(1)+'</td>';
+    tbody.appendChild(tr);
+  });
+  const totRow=document.createElement('tr');
+  totRow.innerHTML='<td style="font-weight:700">Total</td><td></td><td style="font-weight:700">'+totalWeight+'%</td><td style="font-weight:700">'+totalWeighted.toFixed(1)+'</td>';
+  tbody.appendChild(totRow);
+  if(totalWeight<100){
+    const note=document.createElement('tr');
+    note.innerHTML='<td colspan="4" style="color:var(--yellow);font-size:.8rem;padding-top:8px">⚠️ Your weights only add up to '+totalWeight+'%. Most classes should total 100%.</td>';
+    tbody.appendChild(note);
+  }
+  const tip=document.getElementById('aiTipText');
+  if(avg>=93)tip.textContent="You're acing this class. To maintain it, don't slack on the smaller assignments — they add up. Many students lose an A by skipping homework points.";
+  else if(avg>=85)tip.textContent="Strong B+ to A- range. Look at your lowest-scoring category — boosting that one area is the fastest way to push your overall grade up. One good test score can change everything.";
+  else if(avg>=75)tip.textContent="You're in the C+ to B range. Focus your study time on the highest-weighted assignments still coming up. A strong final exam performance can significantly move your grade.";
+  else tip.textContent="Below 75% means it's time to take action. Visit your teacher's office hours, form a study group, and focus exclusively on upcoming high-weight assignments. Every point matters now.";
+  rc.scrollIntoView({behavior:'smooth',block:'center'});
+}
+</script>
+</body>
+</html>
