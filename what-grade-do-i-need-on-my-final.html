@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Grade Do I Need on My Final? (How to Calculate It) | GradeChimp</title>
+<meta name="description" content="Learn exactly how to calculate what grade you need on your final exam to pass or get an A. Step-by-step guide with examples, formula, and a free calculator.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--surface:#13131a;--surface2:#1a1a24;--border:#2a2a3a;--text:#e8e8f0;--text-dim:#8888a0;--accent:#6c5ce7;--accent-glow:#7c6cf7;--accent-light:rgba(108,92,231,.15);--green:#00d2a0;--red:#ff6b6b;--yellow:#ffd93d;--radius:16px;--radius-sm:10px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(108,92,231,.08) 0%,transparent 70%);pointer-events:none;z-index:0}
+.container{max-width:680px;margin:0 auto;padding:20px 16px 60px;position:relative;z-index:1}
+nav{display:flex;justify-content:space-between;align-items:center;padding:16px 0 40px}
+.logo{font-weight:800;font-size:1.3rem;letter-spacing:-.5px;display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--text)}
+.logo-dot{width:10px;height:10px;background:var(--accent);border-radius:50%;box-shadow:0 0 12px var(--accent-glow);animation:pulse-dot 2s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.85)}}
+.nav-links{display:flex;gap:6px}
+.nav-links a{color:var(--text-dim);text-decoration:none;font-size:.85rem;font-weight:500;padding:6px 14px;border-radius:20px;transition:all .2s}
+.nav-links a:hover{color:var(--text);background:var(--surface2)}
+article{margin-bottom:40px}
+article h1{font-size:clamp(1.8rem,5vw,2.3rem);font-weight:800;line-height:1.2;letter-spacing:-1px;margin-bottom:16px}
+article h1 span{background:linear-gradient(135deg,var(--accent-glow),#a29bfe);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.article-meta{color:var(--text-dim);font-size:.85rem;margin-bottom:32px}
+article h2{font-size:1.3rem;font-weight:700;margin-top:36px;margin-bottom:12px;letter-spacing:-.3px}
+article h3{font-size:1.1rem;font-weight:600;margin-top:24px;margin-bottom:10px}
+article p{color:var(--text);font-size:1rem;line-height:1.7;margin-bottom:16px}
+article ul,article ol{margin-bottom:16px;padding-left:24px}
+article li{font-size:1rem;line-height:1.7;margin-bottom:8px}
+.formula-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin:20px 0;text-align:center}
+.formula-box code{font-family:'JetBrains Mono',monospace;font-size:1rem;color:var(--accent-glow);line-height:1.8}
+.example-box{background:var(--surface);border-left:3px solid var(--accent);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:20px 24px;margin:20px 0}
+.example-box .example-title{font-size:.8rem;font-weight:700;color:var(--accent-glow);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.example-box p{margin-bottom:8px}
+.cta-box{background:linear-gradient(135deg,rgba(108,92,231,.15),rgba(108,92,231,.05));border:1px solid rgba(108,92,231,.3);border-radius:var(--radius);padding:28px 24px;margin:28px 0;text-align:center}
+.cta-box h3{font-size:1.15rem;font-weight:700;margin-bottom:8px}
+.cta-box p{color:var(--text-dim);font-size:.95rem;margin-bottom:16px}
+.cta-btn{display:inline-block;padding:14px 32px;background:linear-gradient(135deg,var(--accent),#7c6cf7);color:white;text-decoration:none;border-radius:var(--radius-sm);font-weight:700;font-size:.95rem;transition:all .2s}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(108,92,231,.35)}
+.tip-box{background:var(--surface2);border-radius:var(--radius-sm);padding:16px 20px;margin:20px 0}
+.tip-box strong{color:var(--green)}
+.grade-table{width:100%;border-collapse:collapse;margin:16px 0}
+.grade-table th,.grade-table td{padding:10px 14px;text-align:left;font-size:.9rem;border-bottom:1px solid var(--border)}
+.grade-table th{color:var(--text-dim);font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px}
+.grade-table tr:last-child td{border-bottom:none}
+.tools-section{margin-top:40px}
+.tools-section h2{font-size:1.1rem;font-weight:700;margin-bottom:14px;letter-spacing:-.3px}
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tool-link{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px 16px;text-decoration:none;color:var(--text);transition:all .2s}
+.tool-link:hover{border-color:var(--accent);transform:translateY(-2px)}
+.tool-link .tool-icon{font-size:1.4rem;margin-bottom:8px}
+.tool-link .tool-name{font-size:.88rem;font-weight:600;margin-bottom:3px}
+.tool-link .tool-desc{font-size:.75rem;color:var(--text-dim);line-height:1.4}
+footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--border);text-align:center;color:var(--text-dim);font-size:.78rem}
+</style>
+</head>
+<body>
+<div class="container">
+  <nav>
+    <a href="index.html" class="logo"><div class="logo-dot"></div>GradeChimp</a>
+    <div class="nav-links">
+      <a href="index.html">Final Grade</a>
+      <a href="gpa.html">GPA</a>
+      <a href="grade-average.html">Grade Avg</a>
+    </div>
+  </nav>
+
+  <article>
+    <h1>What Grade Do I Need on My <span>Final Exam</span>?</h1>
+    <div class="article-meta">5 min read · Updated April 2026</div>
+
+    <p>It's the night before finals and you're asking yourself: "What do I need on my final to pass?" or "Can I still get an A?" You're not alone — millions of students ask this exact question every semester.</p>
+
+    <p>The good news is that figuring out what you need on your final exam is simple math. You only need three numbers: your current grade, your final exam's weight, and the grade you want. Here's how to do it.</p>
+
+    <div class="cta-box">
+      <h3>Skip the math — use our free calculator</h3>
+      <p>Enter your numbers and get your answer in 5 seconds.</p>
+      <a href="index.html" class="cta-btn">Open Final Grade Calculator →</a>
+    </div>
+
+    <h2>The Formula</h2>
+
+    <p>Here's the formula to calculate what grade you need on your final exam:</p>
+
+    <div class="formula-box">
+      <code>Final Exam Score = (Target Grade − Current Grade × (1 − Final Weight)) ÷ Final Weight</code>
+    </div>
+
+    <p>Don't worry if that looks confusing. Let's break it down with real examples.</p>
+
+    <h2>Example 1: "I Have an 85% and Want an A"</h2>
+
+    <div class="example-box">
+      <div class="example-title">📝 Example</div>
+      <p><strong>Current grade:</strong> 85%</p>
+      <p><strong>Final exam weight:</strong> 30%</p>
+      <p><strong>Target grade:</strong> 90% (A-)</p>
+      <p><strong>Calculation:</strong> (90 − 85 × 0.70) ÷ 0.30 = (90 − 59.5) ÷ 0.30 = <strong>101.7%</strong></p>
+      <p>Bad news — you'd need over 100% on the final, which is impossible without extra credit. You might want to aim for a B+ instead.</p>
+    </div>
+
+    <h2>Example 2: "I Have a 72% and Just Want to Pass"</h2>
+
+    <div class="example-box">
+      <div class="example-title">📝 Example</div>
+      <p><strong>Current grade:</strong> 72%</p>
+      <p><strong>Final exam weight:</strong> 40%</p>
+      <p><strong>Target grade:</strong> 70% (C-)</p>
+      <p><strong>Calculation:</strong> (70 − 72 × 0.60) ÷ 0.40 = (70 − 43.2) ÷ 0.40 = <strong>67%</strong></p>
+      <p>You need a 67% on the final to pass with a C-. That's very doable — even a below-average performance will get you there.</p>
+    </div>
+
+    <h2>Example 3: "I Have a 94% and Want to Keep My A"</h2>
+
+    <div class="example-box">
+      <div class="example-title">📝 Example</div>
+      <p><strong>Current grade:</strong> 94%</p>
+      <p><strong>Final exam weight:</strong> 25%</p>
+      <p><strong>Target grade:</strong> 93% (A)</p>
+      <p><strong>Calculation:</strong> (93 − 94 × 0.75) ÷ 0.25 = (93 − 70.5) ÷ 0.25 = <strong>90%</strong></p>
+      <p>You need a 90% on the final to keep your A. Challenging but realistic — study hard and you've got this.</p>
+    </div>
+
+    <h2>Quick Reference Table</h2>
+
+    <p>If your final exam is worth <strong>30%</strong> of your grade, here's what you'd need on the final for common scenarios:</p>
+
+    <table class="grade-table">
+      <thead>
+        <tr><th>Current Grade</th><th>Want an A (90%)</th><th>Want a B (80%)</th><th>Want to Pass (70%)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>95%</td><td>78.3%</td><td>45.0%</td><td>11.7%</td></tr>
+        <tr><td>90%</td><td>90.0%</td><td>56.7%</td><td>23.3%</td></tr>
+        <tr><td>85%</td><td>101.7%</td><td>68.3%</td><td>35.0%</td></tr>
+        <tr><td>80%</td><td>113.3%</td><td>80.0%</td><td>46.7%</td></tr>
+        <tr><td>75%</td><td>125.0%</td><td>91.7%</td><td>58.3%</td></tr>
+        <tr><td>70%</td><td>136.7%</td><td>103.3%</td><td>70.0%</td></tr>
+      </tbody>
+    </table>
+
+    <p>Red cells (over 100%) mean it's mathematically impossible without extra credit.</p>
+
+    <h2>5 Tips to Get the Grade You Need</h2>
+
+    <div class="tip-box">
+      <p><strong>1. Start studying now, not the night before.</strong> Spreading your study sessions across 3-5 days is proven to improve retention compared to cramming.</p>
+    </div>
+
+    <div class="tip-box">
+      <p><strong>2. Focus on practice problems, not re-reading notes.</strong> Testing yourself (active recall) is 3x more effective than passively reviewing material.</p>
+    </div>
+
+    <div class="tip-box">
+      <p><strong>3. Study the high-weight topics first.</strong> Check your syllabus — if Chapter 7 is 30% of the final, that's where your time should go.</p>
+    </div>
+
+    <div class="tip-box">
+      <p><strong>4. Ask your teacher what's on the exam.</strong> Most teachers will tell you which chapters or topics to focus on if you ask. It's not cheating — it's being smart.</p>
+    </div>
+
+    <div class="tip-box">
+      <p><strong>5. Sleep 7-8 hours the night before.</strong> Your brain consolidates memories during sleep. An all-nighter does more harm than good.</p>
+    </div>
+
+    <h2>What If I Need Over 100%?</h2>
+
+    <p>If the calculator shows you need more than 100% on your final, here are your options:</p>
+
+    <ol>
+      <li><strong>Ask about extra credit.</strong> Many professors offer extra credit opportunities, especially at the end of the semester. It never hurts to ask.</li>
+      <li><strong>Check if there's a grade curve.</strong> Some classes curve final grades, which could bump you up.</li>
+      <li><strong>See if you can redo any assignments.</strong> Some teachers allow re-submissions on homework or projects.</li>
+      <li><strong>Adjust your target.</strong> If an A is impossible, aim for a B+ instead. Getting the highest grade you can still matters.</li>
+      <li><strong>Talk to your teacher or advisor.</strong> They've seen students in your situation before and might have suggestions you haven't thought of.</li>
+    </ol>
+
+    <h2>How Does the Final Exam Weight Work?</h2>
+
+    <p>Your final exam weight is the percentage of your total grade that the final exam counts for. You can find this on your syllabus. Common weights are 20%, 25%, 30%, or 40%.</p>
+
+    <p>The higher the weight, the more power your final exam has to change your grade — for better or worse. A final worth 40% can swing your grade dramatically, while a final worth 15% won't move it much either way.</p>
+
+    <p>For example, if your final is worth 40% and you currently have a 75%, getting a 95% on the final would bring your overall grade up to 83% (B). But if the final is only worth 20%, that same 95% would only bring you up to 79% (C+).</p>
+
+    <div class="cta-box">
+      <h3>Ready to find out what you need?</h3>
+      <p>Stop guessing. Get your exact number in 5 seconds.</p>
+      <a href="index.html" class="cta-btn">Calculate My Final Grade →</a>
+    </div>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>What if I don't know my current grade?</h3>
+    <p>Check your school's online gradebook (Canvas, Blackboard, PowerSchool, etc.) or ask your teacher. If you can't find it, use our <a href="grade-average.html" style="color:var(--accent-glow)">Grade Average Calculator</a> to calculate it from your individual assignment scores.</p>
+
+    <h3>Does this work for college and high school?</h3>
+    <p>Yes. The formula is the same regardless of whether you're in middle school, high school, or college. The only thing that changes is the grading scale your school uses.</p>
+
+    <h3>What if my class uses total points instead of percentages?</h3>
+    <p>Convert your points to a percentage first. Divide your earned points by the total possible points and multiply by 100. For example, 450 out of 600 points = 75%.</p>
+
+    <h3>Can I calculate this for multiple classes?</h3>
+    <p>Yes — just use the calculator once for each class. You can also use our <a href="gpa.html" style="color:var(--accent-glow)">GPA Calculator</a> to see how all your classes combine into your overall GPA.</p>
+  </article>
+
+  <div class="tools-section">
+    <h2>Free tools</h2>
+    <div class="tool-grid">
+      <a href="index.html" class="tool-link">
+        <div class="tool-icon">🎯</div>
+        <div class="tool-name">Final Grade Calc</div>
+        <div class="tool-desc">What score do you need on your final?</div>
+      </a>
+      <a href="gpa.html" class="tool-link">
+        <div class="tool-icon">📊</div>
+        <div class="tool-name">GPA Calculator</div>
+        <div class="tool-desc">Calculate your semester & cumulative GPA</div>
+      </a>
+      <a href="grade-average.html" class="tool-link">
+        <div class="tool-icon">📝</div>
+        <div class="tool-name">Grade Average</div>
+        <div class="tool-desc">Weighted average across all assignments</div>
+      </a>
+      <a href="study-plan.html" class="tool-link">
+        <div class="tool-icon">🧠</div>
+        <div class="tool-name">AI Study Plan</div>
+        <div class="tool-desc">Personalized study schedule for exams</div>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <p>GradeChimp — free student tools, forever.</p>
+    <p style="margin-top:6px">Built with 💜 for students everywhere.</p>
+  </footer>
+</div>
+</body>
+</html>
