@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Calculate Your Grade Average (Step-by-Step Guide) | GradeChimp</title>
+<meta name="description" content="Learn how to calculate your grade average with weighted and unweighted methods. Step-by-step examples, formulas, and a free grade average calculator.">
+<meta name="keywords" content="grade average, grade average calculator, average of grades, how to calculate grade average, weighted grade average, average calculator grade">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--surface:#13131a;--surface2:#1a1a24;--border:#2a2a3a;--text:#e8e8f0;--text-dim:#8888a0;--accent:#6c5ce7;--accent-glow:#7c6cf7;--accent-light:rgba(108,92,231,.15);--green:#00d2a0;--red:#ff6b6b;--yellow:#ffd93d;--radius:16px;--radius-sm:10px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(108,92,231,.08) 0%,transparent 70%);pointer-events:none;z-index:0}
+.container{max-width:680px;margin:0 auto;padding:20px 16px 60px;position:relative;z-index:1}
+nav{display:flex;justify-content:space-between;align-items:center;padding:16px 0 40px}
+.logo{font-weight:800;font-size:1.3rem;letter-spacing:-.5px;display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--text)}
+.logo-dot{width:10px;height:10px;background:var(--accent);border-radius:50%;box-shadow:0 0 12px var(--accent-glow);animation:pulse-dot 2s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.85)}}
+.nav-links{display:flex;gap:6px}
+.nav-links a{color:var(--text-dim);text-decoration:none;font-size:.85rem;font-weight:500;padding:6px 14px;border-radius:20px;transition:all .2s}
+.nav-links a:hover{color:var(--text);background:var(--surface2)}
+article{margin-bottom:40px}
+article h1{font-size:clamp(1.8rem,5vw,2.3rem);font-weight:800;line-height:1.2;letter-spacing:-1px;margin-bottom:16px}
+article h1 span{background:linear-gradient(135deg,var(--accent-glow),#a29bfe);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.article-meta{color:var(--text-dim);font-size:.85rem;margin-bottom:32px}
+article h2{font-size:1.3rem;font-weight:700;margin-top:36px;margin-bottom:12px;letter-spacing:-.3px}
+article h3{font-size:1.1rem;font-weight:600;margin-top:24px;margin-bottom:10px}
+article p{color:var(--text);font-size:1rem;line-height:1.7;margin-bottom:16px}
+article ul,article ol{margin-bottom:16px;padding-left:24px}
+article li{font-size:1rem;line-height:1.7;margin-bottom:8px}
+.formula-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin:20px 0;text-align:center}
+.formula-box code{font-family:'JetBrains Mono',monospace;font-size:1rem;color:var(--accent-glow);line-height:1.8}
+.example-box{background:var(--surface);border-left:3px solid var(--accent);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:20px 24px;margin:20px 0}
+.example-box .example-title{font-size:.8rem;font-weight:700;color:var(--accent-glow);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.example-box p{margin-bottom:8px}
+.cta-box{background:linear-gradient(135deg,rgba(108,92,231,.15),rgba(108,92,231,.05));border:1px solid rgba(108,92,231,.3);border-radius:var(--radius);padding:28px 24px;margin:28px 0;text-align:center}
+.cta-box h3{font-size:1.15rem;font-weight:700;margin-bottom:8px}
+.cta-box p{color:var(--text-dim);font-size:.95rem;margin-bottom:16px}
+.cta-btn{display:inline-block;padding:14px 32px;background:linear-gradient(135deg,var(--accent),#7c6cf7);color:white;text-decoration:none;border-radius:var(--radius-sm);font-weight:700;font-size:.95rem;transition:all .2s}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(108,92,231,.35)}
+.tip-box{background:var(--surface2);border-radius:var(--radius-sm);padding:16px 20px;margin:20px 0}
+.tip-box strong{color:var(--green)}
+.grade-table{width:100%;border-collapse:collapse;margin:16px 0}
+.grade-table th,.grade-table td{padding:10px 14px;text-align:left;font-size:.9rem;border-bottom:1px solid var(--border)}
+.grade-table th{color:var(--text-dim);font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px}
+.grade-table tr:last-child td{border-bottom:none}
+.tools-section{margin-top:40px}
+.tools-section h2{font-size:1.1rem;font-weight:700;margin-bottom:14px;letter-spacing:-.3px}
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tool-link{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px 16px;text-decoration:none;color:var(--text);transition:all .2s}
+.tool-link:hover{border-color:var(--accent);transform:translateY(-2px)}
+.tool-link .tool-icon{font-size:1.4rem;margin-bottom:8px}
+.tool-link .tool-name{font-size:.88rem;font-weight:600;margin-bottom:3px}
+.tool-link .tool-desc{font-size:.75rem;color:var(--text-dim);line-height:1.4}
+footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--border);text-align:center;color:var(--text-dim);font-size:.78rem}
+</style>
+</head>
+<body>
+<div class="container">
+  <nav>
+    <a href="index.html" class="logo"><div class="logo-dot"></div>GradeChimp</a>
+    <div class="nav-links">
+      <a href="index.html">Final Grade</a>
+      <a href="gpa.html">GPA</a>
+      <a href="grade-average.html">Grade Avg</a>
+    </div>
+  </nav>
+
+  <article>
+    <h1>How to Calculate Your <span>Grade Average</span></h1>
+    <div class="article-meta">6 min read · Updated June 2026</div>
+
+    <p>Whether you want to know your overall class grade before the semester ends or you're trying to figure out if you can still pull off an A, calculating your grade average is the first step. The good news: it's easier than you think.</p>
+
+    <p>There are two ways to calculate your grade average: the <strong>simple method</strong> (when everything is weighted equally) and the <strong>weighted method</strong> (when different assignments count for different amounts). Most classes use weighted grades, so we'll cover both.</p>
+
+    <div class="cta-box">
+      <h3>Don't want to do the math yourself?</h3>
+      <p>Our free calculator does it for you in seconds.</p>
+      <a href="grade-average.html" class="cta-btn">Open Grade Average Calculator →</a>
+    </div>
+
+    <h2>Method 1: Simple Average (Unweighted)</h2>
+
+    <p>If all your assignments are worth the same amount, calculating your grade average is simple. Just add up all your scores and divide by the number of assignments.</p>
+
+    <div class="formula-box">
+      <code>Grade Average = (Sum of All Scores) ÷ (Number of Assignments)</code>
+    </div>
+
+    <div class="example-box">
+      <div class="example-title">📝 Example: Simple Average</div>
+      <p>You have 5 quiz scores: 85, 92, 78, 90, 88</p>
+      <p><strong>Step 1:</strong> Add them up: 85 + 92 + 78 + 90 + 88 = 433</p>
+      <p><strong>Step 2:</strong> Divide by 5: 433 ÷ 5 = <strong>86.6%</strong></p>
+      <p>Your average quiz grade is 86.6% — a solid B+.</p>
+    </div>
+
+    <p>This method works great for quizzes that are all worth the same points. But most classes don't work this way — your final exam usually counts more than a homework assignment. That's where weighted averages come in.</p>
+
+    <h2>Method 2: Weighted Average</h2>
+
+    <p>A weighted grade average accounts for the fact that some assignments matter more than others. Your syllabus usually breaks it down like this: Homework 20%, Quizzes 15%, Midterm 25%, Project 15%, Final Exam 25%.</p>
+
+    <div class="formula-box">
+      <code>Weighted Average = (Score₁ × Weight₁) + (Score₂ × Weight₂) + ... </code>
+    </div>
+
+    <p>Each score gets multiplied by its weight (as a decimal), and then you add everything together.</p>
+
+    <div class="example-box">
+      <div class="example-title">📝 Example: Weighted Average</div>
+      <p>Here are your grades in a class:</p>
+      <p>• Homework: 95% (worth 20% of grade)</p>
+      <p>• Quizzes: 82% (worth 15% of grade)</p>
+      <p>• Midterm: 78% (worth 25% of grade)</p>
+      <p>• Project: 91% (worth 15% of grade)</p>
+      <p>• Final Exam: 85% (worth 25% of grade)</p>
+      <p><strong>Calculation:</strong></p>
+      <p>(95 × 0.20) + (82 × 0.15) + (78 × 0.25) + (91 × 0.15) + (85 × 0.25)</p>
+      <p>= 19.0 + 12.3 + 19.5 + 13.65 + 21.25</p>
+      <p>= <strong>85.7%</strong></p>
+      <p>Your weighted grade average is 85.7% — a B.</p>
+    </div>
+
+    <p>Notice how even though your homework is a 95%, it doesn't pull your average up as much as you'd think because it's only worth 20% of your grade. Meanwhile, the midterm (78%) drags your average down because it's worth 25%.</p>
+
+    <h2>How Weighted Grades Affect Your Average</h2>
+
+    <p>This is the part that surprises most students. Let's look at how the same set of grades can result in very different averages depending on the weights.</p>
+
+    <table class="grade-table">
+      <thead>
+        <tr><th>Category</th><th>Your Score</th><th>Weight: Option A</th><th>Weight: Option B</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Homework</td><td>95%</td><td>40%</td><td>10%</td></tr>
+        <tr><td>Tests</td><td>72%</td><td>30%</td><td>50%</td></tr>
+        <tr><td>Final Exam</td><td>68%</td><td>30%</td><td>40%</td></tr>
+        <tr><td colspan="2"><strong>Weighted Average</strong></td><td><strong>80.0%</strong></td><td><strong>72.9%</strong></td></tr>
+      </tbody>
+    </table>
+
+    <p>Same exact scores. But in Option A (homework-heavy), you get a B-. In Option B (test-heavy), you get a C-. The weights make a 7-point difference. This is why knowing your syllabus weights matters.</p>
+
+    <div class="cta-box">
+      <h3>Try different weight scenarios</h3>
+      <p>Plug in your own scores and weights to see your real grade.</p>
+      <a href="grade-average.html" class="cta-btn">Calculate My Grade Average →</a>
+    </div>
+
+    <h2>What If I Don't Know the Weights?</h2>
+
+    <p>Check your syllabus — it's almost always listed in the first few pages under "Grading" or "Grade Breakdown." If you lost your syllabus, here are other ways to find it:</p>
+
+    <ol>
+      <li><strong>Check your LMS</strong> (Canvas, Blackboard, Google Classroom) — most teachers post the syllabus there</li>
+      <li><strong>Ask your teacher</strong> — a simple "can you remind me how much the final is worth?" works</li>
+      <li><strong>Check old emails</strong> — teachers often email the syllabus at the start of the semester</li>
+      <li><strong>Ask a classmate</strong> — someone probably saved it</li>
+    </ol>
+
+    <p>If you truly can't find the weights, use a simple (unweighted) average as a rough estimate. It won't be perfectly accurate, but it'll give you a ballpark.</p>
+
+    <h2>Common Grade Average Mistakes</h2>
+
+    <div class="tip-box">
+      <p><strong>Mistake #1: Forgetting to convert weights to decimals.</strong> If homework is worth 20%, multiply by 0.20 — not 20. Multiplying by 20 would give you a number in the thousands.</p>
+    </div>
+
+    <div class="tip-box">
+      <p><strong>Mistake #2: Weights that don't add up to 100%.</strong> If your weights total more or less than 100%, something is wrong. Double-check your syllabus. Some classes have categories like "participation" that students forget to include.</p>
+    </div>
+
+    <div class="tip-box">
+      <p><strong>Mistake #3: Including extra credit wrong.</strong> Extra credit points should be added to the relevant category's score before calculating the weighted average — not added at the end.</p>
+    </div>
+
+    <div class="tip-box">
+      <p><strong>Mistake #4: Mixing up points and percentages.</strong> If your teacher uses points (like 45/50), convert to a percentage first (90%) before plugging into the weighted formula.</p>
+    </div>
+
+    <h2>How to Raise Your Grade Average</h2>
+
+    <p>If your average isn't where you want it, focus your effort on the highest-weighted categories. Here's a prioritization strategy:</p>
+
+    <ol>
+      <li><strong>Identify the heaviest weight.</strong> If your final exam is worth 30%, that's your biggest lever.</li>
+      <li><strong>Calculate what you need.</strong> Use our <a href="target.html" style="color:var(--accent-glow)">Target Grade Planner</a> to find out the exact score you need on remaining assignments.</li>
+      <li><strong>Don't ignore small categories.</strong> Homework might only be 15%, but getting 100% on homework is way easier than getting 100% on an exam. Free points.</li>
+      <li><strong>Ask about dropped grades.</strong> Many teachers drop your lowest quiz or homework score. If so, one bad grade might not count at all.</li>
+      <li><strong>Check for extra credit.</strong> Even 2-3 extra points in a heavy category can shift your final grade.</li>
+    </ol>
+
+    <h2>Grade Average vs. GPA — What's the Difference?</h2>
+
+    <p>Your <strong>grade average</strong> is the percentage score in a single class (like 87% in Biology). Your <strong>GPA</strong> combines all your classes into one number on a 4.0 scale.</p>
+
+    <p>To go from grade average to GPA: an A (90-100%) = 4.0, B (80-89%) = 3.0, C (70-79%) = 2.0, and so on. If you want to calculate your GPA across all classes, use our <a href="gpa.html" style="color:var(--accent-glow)">GPA Calculator</a>.</p>
+
+    <table class="grade-table">
+      <thead>
+        <tr><th>Grade Average</th><th>Letter Grade</th><th>GPA</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>93-100%</td><td>A</td><td>4.0</td></tr>
+        <tr><td>90-92%</td><td>A-</td><td>3.7</td></tr>
+        <tr><td>87-89%</td><td>B+</td><td>3.3</td></tr>
+        <tr><td>83-86%</td><td>B</td><td>3.0</td></tr>
+        <tr><td>80-82%</td><td>B-</td><td>2.7</td></tr>
+        <tr><td>77-79%</td><td>C+</td><td>2.3</td></tr>
+        <tr><td>73-76%</td><td>C</td><td>2.0</td></tr>
+        <tr><td>70-72%</td><td>C-</td><td>1.7</td></tr>
+        <tr><td>60-69%</td><td>D</td><td>1.0</td></tr>
+        <tr><td>Below 60%</td><td>F</td><td>0.0</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>How do I calculate my grade average if I have missing assignments?</h3>
+    <p>Missing assignments are usually counted as 0%. Include them in your calculation with a score of 0 and their normal weight. This is why missing assignments hurt your average so badly — a zero in a 10% category drops your entire grade by 10 points.</p>
+
+    <h3>Does my grade average round up?</h3>
+    <p>It depends on your teacher. Some round up (89.5% becomes an A), some don't (89.5% stays a B+). Check your syllabus or ask your teacher about their rounding policy. Don't assume.</p>
+
+    <h3>How do I calculate my grade average with extra credit?</h3>
+    <p>Add extra credit points to the category they belong to. If you earned 5 extra credit points on a test where you scored 82/100, your adjusted score is 87/100 (87%). Then use that adjusted score in the weighted calculation.</p>
+
+    <h3>What's a good grade average?</h3>
+    <p>That depends on your goals. For most students, 80%+ (B-) is solid. For competitive college applications, you want 90%+ (A-) across your classes. For passing, 60-70% is usually the minimum depending on your school.</p>
+
+    <h3>Can I calculate my grade average for the whole semester?</h3>
+    <p>Yes — just include every graded assignment from the entire semester with its weight. If you don't know individual weights, ask your teacher or check the gradebook in Canvas/Blackboard. Our <a href="grade-average.html" style="color:var(--accent-glow)">Grade Average Calculator</a> handles unlimited assignments.</p>
+
+    <div class="cta-box">
+      <h3>Ready to calculate your grade average?</h3>
+      <p>Enter your scores and weights. Get your answer instantly.</p>
+      <a href="grade-average.html" class="cta-btn">Calculate My Grade Average →</a>
+    </div>
+  </article>
+
+  <div class="tools-section">
+    <h2>Free tools</h2>
+    <div class="tool-grid">
+      <a href="index.html" class="tool-link">
+        <div class="tool-icon">🎯</div>
+        <div class="tool-name">Final Grade Calc</div>
+        <div class="tool-desc">What score do you need on your final?</div>
+      </a>
+      <a href="gpa.html" class="tool-link">
+        <div class="tool-icon">📊</div>
+        <div class="tool-name">GPA Calculator</div>
+        <div class="tool-desc">Calculate your semester & cumulative GPA</div>
+      </a>
+      <a href="target.html" class="tool-link">
+        <div class="tool-icon">📈</div>
+        <div class="tool-name">Target Planner</div>
+        <div class="tool-desc">What scores do you need going forward?</div>
+      </a>
+      <a href="study-plan.html" class="tool-link">
+        <div class="tool-icon">🧠</div>
+        <div class="tool-name">AI Study Plan</div>
+        <div class="tool-desc">Personalized study schedule for exams</div>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <p>GradeChimp — free student tools, forever.</p>
+    <p style="margin-top:6px">Built with 💜 for students everywhere.</p>
+  </footer>
+</div>
+</body>
+</html>
