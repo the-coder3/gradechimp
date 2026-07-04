@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Calculate Your GPA (High School & College Guide) | GradeChimp</title>
+<meta name="description" content="Learn how to calculate your GPA step by step. Covers unweighted vs weighted GPA, cumulative GPA, and how to convert letter grades to GPA. Free calculator included.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1498333244709388" crossorigin="anonymous"></script>
+<style>
+:root{--bg:#0a0a0f;--surface:#13131a;--surface2:#1a1a24;--border:#2a2a3a;--text:#e8e8f0;--text-dim:#8888a0;--accent:#6c5ce7;--accent-glow:#7c6cf7;--accent-light:rgba(108,92,231,.15);--green:#00d2a0;--red:#ff6b6b;--yellow:#ffd93d;--radius:16px;--radius-sm:10px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(108,92,231,.08) 0%,transparent 70%);pointer-events:none;z-index:0}
+.container{max-width:680px;margin:0 auto;padding:20px 16px 60px;position:relative;z-index:1}
+nav{display:flex;justify-content:space-between;align-items:center;padding:16px 0 40px}
+.logo{font-weight:800;font-size:1.3rem;letter-spacing:-.5px;display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--text)}
+.logo-dot{width:10px;height:10px;background:var(--accent);border-radius:50%;box-shadow:0 0 12px var(--accent-glow);animation:pulse-dot 2s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.85)}}
+.nav-links{display:flex;gap:6px}
+.nav-links a{color:var(--text-dim);text-decoration:none;font-size:.85rem;font-weight:500;padding:6px 14px;border-radius:20px;transition:all .2s}
+.nav-links a:hover{color:var(--text);background:var(--surface2)}
+article{margin-bottom:40px}
+article h1{font-size:clamp(1.8rem,5vw,2.3rem);font-weight:800;line-height:1.2;letter-spacing:-1px;margin-bottom:16px}
+article h1 span{background:linear-gradient(135deg,var(--accent-glow),#a29bfe);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.article-meta{color:var(--text-dim);font-size:.85rem;margin-bottom:32px}
+article h2{font-size:1.3rem;font-weight:700;margin-top:36px;margin-bottom:12px;letter-spacing:-.3px}
+article h3{font-size:1.1rem;font-weight:600;margin-top:24px;margin-bottom:10px}
+article p{color:var(--text);font-size:1rem;line-height:1.7;margin-bottom:16px}
+article ul,article ol{margin-bottom:16px;padding-left:24px}
+article li{font-size:1rem;line-height:1.7;margin-bottom:8px}
+.formula-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin:20px 0;text-align:center}
+.formula-box code{font-family:'JetBrains Mono',monospace;font-size:1rem;color:var(--accent-glow);line-height:1.8}
+.example-box{background:var(--surface);border-left:3px solid var(--accent);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:20px 24px;margin:20px 0}
+.example-box .example-title{font-size:.8rem;font-weight:700;color:var(--accent-glow);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.example-box p{margin-bottom:8px}
+.cta-box{background:linear-gradient(135deg,rgba(108,92,231,.15),rgba(108,92,231,.05));border:1px solid rgba(108,92,231,.3);border-radius:var(--radius);padding:28px 24px;margin:28px 0;text-align:center}
+.cta-box h3{font-size:1.15rem;font-weight:700;margin-bottom:8px}
+.cta-box p{color:var(--text-dim);font-size:.95rem;margin-bottom:16px}
+.cta-btn{display:inline-block;padding:14px 32px;background:linear-gradient(135deg,var(--accent),#7c6cf7);color:white;text-decoration:none;border-radius:var(--radius-sm);font-weight:700;font-size:.95rem;transition:all .2s}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(108,92,231,.35)}
+.tip-box{background:var(--surface2);border-radius:var(--radius-sm);padding:16px 20px;margin:20px 0}
+.tip-box strong{color:var(--green)}
+.grade-table{width:100%;border-collapse:collapse;margin:16px 0}
+.grade-table th,.grade-table td{padding:10px 14px;text-align:left;font-size:.9rem;border-bottom:1px solid var(--border)}
+.grade-table th{color:var(--text-dim);font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px}
+.grade-table tr:last-child td{border-bottom:none}
+.tools-section{margin-top:40px}
+.tools-section h2{font-size:1.1rem;font-weight:700;margin-bottom:14px;letter-spacing:-.3px}
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tool-link{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px 16px;text-decoration:none;color:var(--text);transition:all .2s}
+.tool-link:hover{border-color:var(--accent);transform:translateY(-2px)}
+.tool-link .tool-icon{font-size:1.4rem;margin-bottom:8px}
+.tool-link .tool-name{font-size:.88rem;font-weight:600;margin-bottom:3px}
+.tool-link .tool-desc{font-size:.75rem;color:var(--text-dim);line-height:1.4}
+footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--border);text-align:center;color:var(--text-dim);font-size:.78rem}
+footer a{color:var(--accent-glow);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="container">
+  <nav>
+    <a href="index.html" class="logo"><div class="logo-dot"></div>GradeChimp</a>
+    <div class="nav-links">
+      <a href="index.html">Final Grade</a>
+      <a href="gpa.html">GPA</a>
+      <a href="grade-average.html">Grade Avg</a>
+    </div>
+  </nav>
+
+  <article>
+    <h1>How to Calculate Your <span>GPA</span> (Step-by-Step)</h1>
+    <div class="article-meta">7 min read · Updated July 2026</div>
+
+    <p>Your GPA (Grade Point Average) is a single number that represents your academic performance across all your classes. Whether you're applying to college, trying to get on the Dean's List, or just want to know where you stand, understanding how GPA works is essential.</p>
+
+    <p>There are two types of GPA: <strong>unweighted</strong> (the standard 4.0 scale) and <strong>weighted</strong> (which gives extra points for AP, Honors, and IB classes). We'll cover both in this guide, along with how to calculate your cumulative GPA across multiple semesters.</p>
+
+    <div class="cta-box">
+      <h3>Skip the math — calculate instantly</h3>
+      <p>Enter your courses and grades. Get your GPA in seconds.</p>
+      <a href="gpa.html" class="cta-btn">Open GPA Calculator →</a>
+    </div>
+
+    <h2>The GPA Scale</h2>
+
+    <p>Before you can calculate your GPA, you need to know how letter grades convert to grade points. Here's the standard scale used by most schools in the United States:</p>
+
+    <table class="grade-table">
+      <thead><tr><th>Letter Grade</th><th>Percentage</th><th>Grade Points</th></tr></thead>
+      <tbody>
+        <tr><td>A+</td><td>97-100%</td><td>4.0</td></tr>
+        <tr><td>A</td><td>93-96%</td><td>4.0</td></tr>
+        <tr><td>A-</td><td>90-92%</td><td>3.7</td></tr>
+        <tr><td>B+</td><td>87-89%</td><td>3.3</td></tr>
+        <tr><td>B</td><td>83-86%</td><td>3.0</td></tr>
+        <tr><td>B-</td><td>80-82%</td><td>2.7</td></tr>
+        <tr><td>C+</td><td>77-79%</td><td>2.3</td></tr>
+        <tr><td>C</td><td>73-76%</td><td>2.0</td></tr>
+        <tr><td>C-</td><td>70-72%</td><td>1.7</td></tr>
+        <tr><td>D+</td><td>67-69%</td><td>1.3</td></tr>
+        <tr><td>D</td><td>63-66%</td><td>1.0</td></tr>
+        <tr><td>D-</td><td>60-62%</td><td>0.7</td></tr>
+        <tr><td>F</td><td>Below 60%</td><td>0.0</td></tr>
+      </tbody>
+    </table>
+
+    <p>Some schools treat A+ as 4.3, but most cap it at 4.0. Check with your school if you're unsure.</p>
+
+    <h2>How to Calculate Unweighted GPA</h2>
+
+    <p>An unweighted GPA treats all classes equally, regardless of difficulty. An A in PE counts the same as an A in AP Chemistry. Here's the formula:</p>
+
+    <div class="formula-box">
+      <code>GPA = Total Grade Points ÷ Number of Classes</code>
+    </div>
+
+    <div class="example-box">
+      <div class="example-title">📝 Example: Unweighted GPA</div>
+      <p>You're taking 5 classes this semester:</p>
+      <p>• English: A (4.0)</p>
+      <p>• Math: B+ (3.3)</p>
+      <p>• Science: A- (3.7)</p>
+      <p>• History: B (3.0)</p>
+      <p>• Spanish: A (4.0)</p>
+      <p><strong>Step 1:</strong> Add up grade points: 4.0 + 3.3 + 3.7 + 3.0 + 4.0 = 18.0</p>
+      <p><strong>Step 2:</strong> Divide by number of classes: 18.0 ÷ 5 = <strong>3.6 GPA</strong></p>
+    </div>
+
+    <h2>How to Calculate Weighted GPA</h2>
+
+    <p>A weighted GPA gives bonus points for harder classes. The exact bonus varies by school, but here's the most common system:</p>
+
+    <table class="grade-table">
+      <thead><tr><th>Class Type</th><th>A</th><th>B</th><th>C</th><th>D</th></tr></thead>
+      <tbody>
+        <tr><td>Regular</td><td>4.0</td><td>3.0</td><td>2.0</td><td>1.0</td></tr>
+        <tr><td>Honors</td><td>4.5</td><td>3.5</td><td>2.5</td><td>1.5</td></tr>
+        <tr><td>AP/IB</td><td>5.0</td><td>4.0</td><td>3.0</td><td>2.0</td></tr>
+      </tbody>
+    </table>
+
+    <div class="example-box">
+      <div class="example-title">📝 Example: Weighted GPA</div>
+      <p>Same grades, but now with class types:</p>
+      <p>• English (Regular): A = 4.0</p>
+      <p>• Math (AP): B+ = 4.3</p>
+      <p>• Science (Honors): A- = 4.2</p>
+      <p>• History (Regular): B = 3.0</p>
+      <p>• Spanish (Regular): A = 4.0</p>
+      <p><strong>Weighted GPA:</strong> (4.0 + 4.3 + 4.2 + 3.0 + 4.0) ÷ 5 = <strong>3.9 GPA</strong></p>
+      <p>Compare that to the 3.6 unweighted GPA — the harder classes boosted it by 0.3 points.</p>
+    </div>
+
+    <h2>How to Calculate GPA with Credits</h2>
+
+    <p>In college (and some high schools), classes have different credit hours. A 4-credit class matters more than a 1-credit class. Here's how to account for that:</p>
+
+    <div class="formula-box">
+      <code>GPA = (Sum of Grade Points × Credits) ÷ Total Credits</code>
+    </div>
+
+    <div class="example-box">
+      <div class="example-title">📝 Example: GPA with Credits</div>
+      <p>• Calculus (4 credits): B+ = 3.3 → 3.3 × 4 = 13.2</p>
+      <p>• English (3 credits): A = 4.0 → 4.0 × 3 = 12.0</p>
+      <p>• Chemistry (4 credits): B = 3.0 → 3.0 × 4 = 12.0</p>
+      <p>• Art (2 credits): A = 4.0 → 4.0 × 2 = 8.0</p>
+      <p>• PE (1 credit): A = 4.0 → 4.0 × 1 = 4.0</p>
+      <p><strong>Total quality points:</strong> 13.2 + 12.0 + 12.0 + 8.0 + 4.0 = 49.2</p>
+      <p><strong>Total credits:</strong> 4 + 3 + 4 + 2 + 1 = 14</p>
+      <p><strong>GPA:</strong> 49.2 ÷ 14 = <strong>3.51</strong></p>
+    </div>
+
+    <p>Notice how this is different from just averaging the grades (which would give 3.66). The credit-weighted GPA is lower because the lower grades (B+ and B) were in 4-credit classes, which carry more weight.</p>
+
+    <h2>How to Calculate Cumulative GPA</h2>
+
+    <p>Your cumulative GPA combines all semesters into one number. There are two ways to do this:</p>
+
+    <h3>Method 1: If you know your previous GPA and credits</h3>
+
+    <div class="formula-box">
+      <code>Cumulative GPA = (Old GPA × Old Credits + New GPA × New Credits) ÷ Total Credits</code>
+    </div>
+
+    <div class="example-box">
+      <div class="example-title">📝 Example</div>
+      <p><strong>Previous:</strong> 3.2 GPA with 30 credits</p>
+      <p><strong>This semester:</strong> 3.8 GPA with 15 credits</p>
+      <p><strong>Cumulative:</strong> (3.2 × 30 + 3.8 × 15) ÷ (30 + 15) = (96 + 57) ÷ 45 = <strong>3.4 GPA</strong></p>
+    </div>
+
+    <h3>Method 2: Add up everything from scratch</h3>
+
+    <p>If you have your grades from every class you've ever taken, you can add up all the quality points and divide by total credits. This is more accurate but takes longer. Our <a href="gpa.html" style="color:var(--accent-glow)">GPA Calculator</a> has a cumulative GPA option that handles this automatically.</p>
+
+    <h2>What's a Good GPA?</h2>
+
+    <table class="grade-table">
+      <thead><tr><th>GPA Range</th><th>Rating</th><th>What It Means</th></tr></thead>
+      <tbody>
+        <tr><td>3.7 - 4.0</td><td>Excellent</td><td>Dean's List, top scholarships, competitive colleges</td></tr>
+        <tr><td>3.3 - 3.69</td><td>Very Good</td><td>Above average, strong college applications</td></tr>
+        <tr><td>3.0 - 3.29</td><td>Good</td><td>Solid performance, meets most requirements</td></tr>
+        <tr><td>2.5 - 2.99</td><td>Average</td><td>Room for improvement, may limit options</td></tr>
+        <tr><td>2.0 - 2.49</td><td>Below Average</td><td>Minimum for most college requirements</td></tr>
+        <tr><td>Below 2.0</td><td>At Risk</td><td>Academic probation territory, need immediate improvement</td></tr>
+      </tbody>
+    </table>
+
+    <h2>7 Ways to Raise Your GPA</h2>
+
+    <div class="tip-box"><p><strong>1. Prioritize high-credit classes.</strong> A grade improvement in a 4-credit class moves your GPA twice as much as in a 2-credit class.</p></div>
+
+    <div class="tip-box"><p><strong>2. Don't skip homework.</strong> Homework is usually easy points. Getting 100% on homework that's worth 15% of your grade is way easier than acing an exam.</p></div>
+
+    <div class="tip-box"><p><strong>3. Go to office hours.</strong> Students who visit professors' office hours score an average of half a letter grade higher. It's free tutoring.</p></div>
+
+    <div class="tip-box"><p><strong>4. Retake classes if allowed.</strong> Many schools let you retake a class and replace the old grade. Turning a D into a B can significantly boost your GPA.</p></div>
+
+    <div class="tip-box"><p><strong>5. Take classes you're good at.</strong> If you need elective credits, choose subjects where you naturally excel. An easy A helps your GPA.</p></div>
+
+    <div class="tip-box"><p><strong>6. Study smarter, not longer.</strong> Use active recall and spaced repetition instead of re-reading notes. 30 minutes of practice problems beats 2 hours of highlighting.</p></div>
+
+    <div class="tip-box"><p><strong>7. Create a study schedule.</strong> Use our <a href="study-plan.html" style="color:var(--accent-glow)">AI Study Plan Generator</a> to build a personalized study schedule around your exams.</p></div>
+
+    <h2>GPA FAQs</h2>
+
+    <h3>Does my GPA reset in college?</h3>
+    <p>Yes. Your college GPA starts fresh — your high school GPA doesn't carry over. However, colleges do look at your high school GPA during admissions.</p>
+
+    <h3>Do plus/minus grades affect GPA?</h3>
+    <p>At most schools, yes. An A- (3.7) is lower than an A (4.0), and a B+ (3.3) is higher than a B (3.0). Some schools don't use plus/minus — check your school's grading policy.</p>
+
+    <h3>Is a 3.5 GPA good?</h3>
+    <p>Yes. A 3.5 GPA puts you above average and qualifies you for most scholarships and academic honors. It's roughly equivalent to an A-/B+ average.</p>
+
+    <h3>How much does one bad grade hurt my GPA?</h3>
+    <p>It depends on how many total credits you have. Early in your academic career, one bad grade has a big impact. After you've accumulated 60+ credits, one class barely moves the needle. Use our <a href="gpa.html" style="color:var(--accent-glow)">GPA Calculator</a> with the cumulative option to see the exact impact.</p>
+
+    <h3>Can I calculate my GPA without credit hours?</h3>
+    <p>Yes — just use the simple method (total grade points ÷ number of classes). This gives you an unweighted average that's a close approximation for most high school students.</p>
+
+    <div class="cta-box">
+      <h3>Calculate your GPA now</h3>
+      <p>Enter your classes, grades, and credits. Get your GPA instantly.</p>
+      <a href="gpa.html" class="cta-btn">Open GPA Calculator →</a>
+    </div>
+  </article>
+
+  <!-- GradeChimp Main -->
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1498333244709388" data-ad-slot="4724302502" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+  <div class="tools-section">
+    <h2>Free tools</h2>
+    <div class="tool-grid">
+      <a href="index.html" class="tool-link"><div class="tool-icon">🎯</div><div class="tool-name">Final Grade Calc</div><div class="tool-desc">What score do you need on your final?</div></a>
+      <a href="grade-average.html" class="tool-link"><div class="tool-icon">📝</div><div class="tool-name">Grade Average</div><div class="tool-desc">Weighted average across all assignments</div></a>
+      <a href="target.html" class="tool-link"><div class="tool-icon">📈</div><div class="tool-name">Target Planner</div><div class="tool-desc">What scores do you need going forward?</div></a>
+      <a href="study-plan.html" class="tool-link"><div class="tool-icon">🧠</div><div class="tool-name">AI Study Plan</div><div class="tool-desc">Personalized study schedule for exams</div></a>
+    </div>
+  </div>
+  <footer>
+    <p>GradeChimp — free student tools, forever.</p>
+    <p style="margin-top:6px">Built with 💜 for students everywhere.</p>
+    <p style="margin-top:8px"><a href="about.html">About</a> · <a href="privacy.html">Privacy Policy</a></p>
+  </footer>
+</div>
+</body>
+</html>
